@@ -1,0 +1,34 @@
+services:
+  rstudio:
+    image: rstudio-mila-image
+    build:
+     context: .
+     dockerfile: docker/Dockerfile
+    container_name: rstudio-mila
+    ports:
+      - "54459:8787"
+    volumes:
+      - type: "bind"
+        source: ".Rprofile"
+        target: "/home/rstudio/.Rprofile"
+      - type: "bind"
+        source: "$HOME/.gitconfig"
+        target: "/home/rstudio/.gitconfig"
+      - type: "bind"
+        source: "/mnt/raid1/projects/2_primary.analysis/AG_Kashkar/Schiffmann/RNA-seq_project_fschorn_HK01/Debasish/mila-again"
+        target: "/home/rstudio/project"
+      - type: "bind"
+        source: "/mnt/raid1/projects/2_primary.analysis/AG_Kashkar/Schiffmann/RNA-seq_project_fschorn_HK01/_targets"
+        target: "/home/rstudio/project/_targets"
+      - type: "bind"
+        source: "/home/ugoebel/rstudio_cache/R"
+        target: "/home/rstudio/.cache/R"
+      - type: "bind"
+        source: "/home/ugoebel/rstudio_cache/AnnotationHub"
+        target: "/home/rstudio/.cache/AnnotationHub"
+    environment:
+      - USERNAME=ugoebel
+      - USERID=1000
+      - GROUPID=1000
+      - USER=rstudio
+      - PASSWORD=1rstudio
