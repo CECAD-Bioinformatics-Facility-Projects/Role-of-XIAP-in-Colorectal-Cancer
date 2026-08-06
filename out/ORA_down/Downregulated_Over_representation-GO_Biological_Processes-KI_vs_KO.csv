@@ -1,0 +1,2 @@
+ID,Description,k,M,percent,GeneRatio,n,BgRatio,N,pvalue,p.adjust,qvalue,geneID
+GO:0061512,protein localization to cilium,5,45,11.11111111111111,0.07575757575757576,66,0.005842638275772527,7702,3.7151769894639486e-5,0.04985767519860619,0.04849283649405576,Ift80/Crocc/Dync2h1/Tctn2/Cplane1
