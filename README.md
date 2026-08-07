@@ -1,4 +1,4 @@
-# RNA-Seq Analysis Project
+# RNA-Seq Analysis Project for Mila
 
 This repository contains a reproducible RNA-Seq analysis workflow.
 
