@@ -107,7 +107,7 @@ GSEA_plot <- aplot::plot_list(gglist = pp, ncol = 1, heights = c(0.35,0.15,0.5))
 
 
 ## --------------- Gene Set Volcano Plot: ----------------------------------------------
-gene_volcao <-
+gene_set_volcao <-
 EnhancedVolcano(use_gg |> as.data.frame(),
 				x="NES",
 				y="pvalue", ##"p.adjust",
