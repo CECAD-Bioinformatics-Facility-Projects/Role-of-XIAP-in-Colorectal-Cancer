@@ -100,10 +100,10 @@ pp <-
 	)
 	)
 ## (2d) Merge the 3 sub-plots
-ppa <- aplot::plot_list(gglist = pp, ncol = 1, heights = c(0.35,0.15,0.5))
+GSEA_plot <- aplot::plot_list(gglist = pp, ncol = 1, heights = c(0.35,0.15,0.5))
 
-## (2e) Finally print the merged plot:
-ppa
+## (2e) To print the merged plot type:
+## GSEA_plot
 
 
 ## --------------- Gene Set Volcano Plot: ----------------------------------------------
@@ -229,7 +229,7 @@ df_all <- tar_read("results_annotated_ee3a0030", store=use_store) |>
 DFs <- list(min_cov = df_min_cov, all = df_all)
 DFs.rds <- saveRDS(DFs, file="DFs.rds")
 
-EV_genes_padj <-
+gene_volcano <-
 	lapply(DFs,
 		   function(df) {
 
@@ -291,5 +291,5 @@ EV_genes_padj <-
 
 
 ## Printing a list element plots the respective volcano:
-EV_genes_padj$min_cov
-EV_genes_padj$all
+##gene_volcano$min_cov
+##gene_volcano$all

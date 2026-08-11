@@ -2,7 +2,7 @@ library(targets)
 library(tarchetypes)
 source("R/functions.R")
 source("R/functional_enrichment.R")
-source("R/heatmaps.R")
+##source("R/heatmaps.R")
 options(tidyverse.quiet = TRUE)
 tar_option_set(packages = c(
 	"dplyr",
@@ -11,7 +11,7 @@ tar_option_set(packages = c(
 	"purrr",
 	"tidyr",
 	"qs",
-	
+
 	"AnnotationHub",
 	"ensembldb",
 	"AnnotationDbi",
@@ -22,14 +22,14 @@ tar_option_set(packages = c(
 	"apeglm",
 	"DOSE",
 	"clusterProfiler",
-	
+
 	"flexdashboard",
 	"ggplot2",
 	"ggnewscale",
 	"plotly",
 	"crosstalk",
 	"DT",
-	
+
 	# remotes::install_github("RichardJActon/colourScaleR")
 	"colourScaleR"
 ),
@@ -72,7 +72,7 @@ list(
 	    "results_RNA-seq/star_salmon/",
 	    recurse = TRUE, regexp = "quant.sf"
 	  ),
-	  format = "file"	
+	  format = "file"
 	),
 	tar_target(
 	  files_tab,
@@ -170,8 +170,8 @@ list(
 	tar_target(
 		pairs,
 		sample_table %>%
-			dplyr::pull(condition) %>% 
-			levels() %>% 
+			dplyr::pull(condition) %>%
+			levels() %>%
 			combn(2, simplify = FALSE)
 	),
 	tar_target(
@@ -200,7 +200,7 @@ list(
 		pattern = map(dds),
 		format = "qs"
 	),
-	# pairwise differential gene expression between conditions was computed 
+	# pairwise differential gene expression between conditions was computed
 	# with DESeq2, log fold change values have been subject to shrinkage with
 	# the 'ashr' method.
 	tar_target(
@@ -506,7 +506,7 @@ list(
 	),
 
 	# Report formatting ----
-		
+
 	tar_target(
 		results_formatted,
 		format_results(results_annotated, organism_name),
@@ -515,7 +515,7 @@ list(
 	),
 
 	tar_target(
-		results_formatted_filt, 
+		results_formatted_filt,
 		results_formatted %>%
 			dplyr::filter(
 				padj < padj_display_cutoff,
@@ -530,7 +530,7 @@ list(
 		nrow(results_formatted_filt) > 1,
 		pattern = map(results_formatted_filt),
 		format = "qs"
-	),	
+	),
 	## -- tmp
 	## tar_target(
 	## 	pairs_restricted,
@@ -541,9 +541,9 @@ list(
 	## 	sample_table %>% dplyr::filter(condition %in% pairs_restricted[[1]]),
 	## 	pattern = map(pairs_restricted)
 	## ),
-	## 
+	##
 	## -- tmp
-	
+
 	tar_target(
 		shared_data,
 		SharedData$new(results_formatted_filt),
@@ -551,8 +551,8 @@ list(
 		format = "qs"
 	),
 	tar_target(
-		dge_report_tibble, 
-			
+		dge_report_tibble,
+
 		tibble::tibble(
 			sample_table_sub = list(sample_table_sub),
 			shared_data = list(shared_data),
@@ -571,27 +571,27 @@ list(
 		),
 		format = "qs"
 	),
-	##tar_target( ## UG 
-	##	dge_report_tibble, 
+	##tar_target( ## UG
+	##	dge_report_tibble,
 	##	dge_report_tibble_full[good_results,]
 	##),
-		
+
 	## UG: see https://github.com/ropensci/targets/issues/256
 	## UG: https://github.com/rstudio/rmarkdown/issues/1632
 	##tar_render(
 	##	dge_report, "dge_report.Rmd",
 	##	params =dge_report_tibble %>% dplyr::filter(use) %>% ## filter by UG
-	##		dplyr::ungroup() %>% 
+	##		dplyr::ungroup() %>%
 	##		dplyr::select(-output_file),
     ##
 	##	output_file = dge_report_tibble$output_file
 	##),
 	## UG: see warning from dge_report: the condition has length  1 and only the first element will be used. line.width does not currently support multiple values.
 	## UG: (but there is no symbol "line.width" in dge_report.Rmd)
-	
+
 	 tarchetypes::tar_render_rep(
 	 	dge_report, "dge_report.Rmd",
-	 	params = dge_report_tibble %>% dplyr::filter(use) %>% dplyr::ungroup() 
+	 	params = dge_report_tibble %>% dplyr::filter(use) %>% dplyr::ungroup()
 	 	#batches = 4
 	 ) ,
 	# Reports ----
@@ -599,23 +599,23 @@ list(
 	 	fe_report_tibble, ## suffix _full by UG
 	 	tibble::tibble(
 	 		ont = rep(ontology, length(pairs)),
-	 		
+
 	 		GO_GSEA_csvs = GO_GSEA_csvs,
 	 		GO_GSEA_res_tables_formatted = GO_GSEA_res_tables_formatted,
 	 		GO_GSEA_emapplot = GO_GSEA_emapplot,
 	 		GO_GSEA_gseaplot2 = GO_GSEA_gseaplot2,
 	 		GO_GSEA_dotplot = GO_GSEA_dotplot,
-	 
+
 	 		GO_ORA_UP_csvs = GO_ORA_UP_csvs,
 	 		GO_ORA_UP_res_tables_formatted = GO_ORA_UP_res_tables_formatted,
 	 		GO_ORA_UP_emapplot = GO_ORA_UP_emapplot,
 	 		GO_ORA_UP_dotplot = GO_ORA_UP_dotplot,
-	 
+
 	 		GO_ORA_DOWN_csvs = GO_ORA_DOWN_csvs,
 	 		GO_ORA_DOWN_res_tables_formatted = GO_ORA_DOWN_res_tables_formatted,
 	 		GO_ORA_DOWN_emapplot = GO_ORA_DOWN_emapplot,
 	 		GO_ORA_DOWN_dotplot = GO_ORA_DOWN_dotplot,
-	 
+
 	 		name = purrr::map_chr(
 	 			rep(pairs, each = length(ontology)),
 	 			~paste0(rev(.x), collapse = "_vs_")
@@ -647,13 +647,13 @@ list(
         #batches = 4
 	),
 	##tar_target( ## UG
-	##	fe_report_tibble, 
+	##	fe_report_tibble,
 	##	fe_report_tibble_full[good_results,]
 	##),
     ##tar_render(
     ##	fe_report, "fe_report.Rmd",
-##	params = fe_report_tibble %>% 
-##			dplyr::ungroup() %>% 
+##	params = fe_report_tibble %>%
+##			dplyr::ungroup() %>%
 ##			dplyr::select(-output_file),
 ##		output_file = fe_report_tibble$output_file
 ##	),
