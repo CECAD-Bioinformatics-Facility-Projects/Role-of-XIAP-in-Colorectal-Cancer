@@ -1,0 +1,23 @@
+# RNA-Seq specific ignores
+data/raw_data/*
+data/reference_data/*
+data/meta_data/*
+data/processed_data/*
+#results_RNA-seq*/*
+#results_RNA-seq/star_salmon/stringtie
+#!results_RNA-seq/star_salmon/*/quant.sf
+#!results_RNA-seq/star_salmon/*.tsv
+#results/*
+#logs/
+.Rhistory
+.RData
+.Rproj.user
+renv/library/
+renv/staging/
+.Renviron
+.Rdata
+.httr-oauth
+.DS_Store
+*.rds
+*.RDS
+
