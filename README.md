@@ -6,13 +6,10 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 
 - Raw `RNA seq reads` (link to be provided) were processed with the [nf-core rnaseq pipeline v3.6](https://github.com/nf-core/rnaseq/blob/master/CITATIONS.md)
 - `quant.sf files` are produced by the [salmon](https://combine-lab.github.io/salmon/) software as part of the nf-core pipeline. They contain probabilistic `estimates of individual transcript expression` 
-- A local [targets](https://books.ropensci.org/targets/) pipeline computes `Differential Gene Expression (DGE)` and `Gene Set Enrichment Analysis (GSEA)` results from the quant.sf files 
+- A local [targets](https://books.ropensci.org/targets/) pipeline computes `Differential Gene Expression (DGE)`, `Gene Set Enrichment Analysis (GSEA)`, and other high-level result objects from the quant.sf files 
+- `Downstream scripts post-process and visualize` these targets objects 
 
 ## Software structure
-
-Two pieces of local software were used in this project:
-- The `targets pipeline`
-- The R script `reproduce_figures.R`: It draws figures based on the DGE and GSEA objects
 
 Both scripts come with a `renv.lock` file describing the expected environment of execution.
 
