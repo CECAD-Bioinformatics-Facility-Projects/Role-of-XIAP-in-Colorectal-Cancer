@@ -1,4 +1,4 @@
-# Role of XIAP in CRC
+# Role of XIAP in Colorectal Cancer
 
 ## Repository structure
 
