@@ -1,4 +1,6 @@
-# Role of XIAP in Colorectal Cancer
+# Role of XIAP in Colorectal Cancer (CRC)
+
+Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) and wildtype mice, in order to experimentally examine the role of XIAP in CRC pathogenesis. This repository contains a reproducible workflow for the analysis of RNA-Seq data from this experiment. 
 
 ## Repository structure
 
