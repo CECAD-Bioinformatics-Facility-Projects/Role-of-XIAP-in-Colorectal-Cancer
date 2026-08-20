@@ -1,9 +1,11 @@
 library(targets)
-library(tarchetypes)
+##library(tarchetypes)
 source("R/functions.R")
 source("R/functional_enrichment.R")
-##source("R/heatmaps.R")
 options(tidyverse.quiet = TRUE)
+
+Sys.setenv(ANNOTATION_HUB_CACHE = "./.cache")
+
 tar_option_set(packages = c(
 	"dplyr",
 	"tibble",
@@ -37,6 +39,11 @@ debug="dge_report"
 )
 
 list(
+  tar_target( ## UG
+    use_ensembl,
+    105
+  ),
+
 	# Differential Expression Analysis ----
 	## Design Info ----
 	tar_target(
@@ -58,12 +65,12 @@ list(
 	),
 	tar_target(
 		txdb,
-		get_enseml_txdb_annohub(organism_name, 103)
+		get_enseml_txdb_annohub(organism_name, use_ensembl), ##105)
 	),
 	tar_target(
 		tx2gene,
 		get_tx2gene(txdb(),
-                            prefix="") ## UG, for Kashkar data
+                prefix="") ## UG, for Kashkar data
 	),
 	## Data Read-in ----
 	tar_target(
@@ -90,19 +97,6 @@ list(
 		txi,
 		named_tximport(files_tab, type = "salmon", tx2gene = tx2gene)
 	),
-	# tar_target(
-	# 	files_tab,
-	# 	nf_salmon_quant_files_table(design, "results_RNA-seq/star_salmon/")
-	# ),
-	# tar_target(
-	# 	quant_files,
-	# 	nf_salmon_quant_files(files_tab)
-	# ),
-	# tar_target(
-	# 	txi,
-	# 	tximport::tximport(quant_files, type = "salmon", tx2gene = tx2gene),
-	# 	format = "qs"
-	# ),
 	tar_target(
 		raw_counts,
 		tximport::tximport(
@@ -148,7 +142,9 @@ list(
 			fs::dir_create(fs::path_dir(path))
 			vroom::vroom_write(counts, path, delim = "\t")
 			return(path)
-		})("report/count_matrix_raw.tsv"),
+		##})("report/count_matrix_raw.tsv"),
+		})("count_matrix_raw.tsv"), ## UG Aug 20, 2026
+
 		format = "file"
 	),
 	tar_target(
@@ -157,7 +153,8 @@ list(
 			fs::dir_create(fs::path_dir(path))
 			vroom::vroom_write(vst_counts_anno, path, delim = "\t")
 			return(path)
-		})("report/count_matrix_vst.tsv"),
+		##})("report/count_matrix_vst.tsv"),
+		})("count_matrix_vst.tsv"), ## UG Aug 20, 2026
 		format = "file"
 	),
 	tar_target(
@@ -349,18 +346,18 @@ list(
 		pattern = map(GO_GSEA_names_pairs, GO_GSEA),
 		format = "file"
 	),
-	tar_target(
-		GO_GSEA_res_tables_prep,
-		GSEA_res_table_prep(GO_GSEA),
-		pattern = map(GO_GSEA),
-		format = "qs"
-	),
-	tar_target(
-		GO_GSEA_res_tables_formatted,
-		GO_GSEA_RT(GO_GSEA_res_tables_prep),
-		pattern = map(GO_GSEA_res_tables_prep),
-		format = "qs"
-	),
+	# tar_target(
+	# 	GO_GSEA_res_tables_prep,
+	# 	GSEA_res_table_prep(GO_GSEA),
+	# 	pattern = map(GO_GSEA),
+	# 	format = "qs"
+	# ),
+	# tar_target(
+	# 	GO_GSEA_res_tables_formatted,
+	# 	GO_GSEA_RT(GO_GSEA_res_tables_prep),
+	# 	pattern = map(GO_GSEA_res_tables_prep),
+	# 	format = "qs"
+	# ),
 	tar_target(
 		GO_GSEA_emapplot,
 		emapplot(GO_GSEA[[1]], GO_GSEA_names_exp),
@@ -418,18 +415,18 @@ list(
 		format = "file"
 	),
 
-	tar_target(
-		GO_ORA_UP_res_tables_prep,
-		ORA_res_table_prep(GO_ORA_UP),
-		pattern = map(GO_ORA_UP),
-		format = "qs"
-	),
-	tar_target(
-		GO_ORA_UP_res_tables_formatted,
-		GO_ORA_RT(GO_ORA_UP_res_tables_prep),
-		pattern = map(GO_ORA_UP_res_tables_prep),
-		format = "qs"
-	),
+	# tar_target(
+	# 	GO_ORA_UP_res_tables_prep,
+	# 	ORA_res_table_prep(GO_ORA_UP),
+	# 	pattern = map(GO_ORA_UP),
+	# 	format = "qs"
+	# ),
+	# tar_target(
+	# 	GO_ORA_UP_res_tables_formatted,
+	# 	GO_ORA_RT(GO_ORA_UP_res_tables_prep),
+	# 	pattern = map(GO_ORA_UP_res_tables_prep),
+	# 	format = "qs"
+	# ),
 	tar_target(
 		GO_ORA_UP_emapplot,
 		emapplot(GO_ORA_UP[[1]], GO_ORA_UP_names_exp),
@@ -480,18 +477,18 @@ list(
 		format = "file"
 	),
 
-	tar_target(
-		GO_ORA_DOWN_res_tables_prep,
-		ORA_res_table_prep(GO_ORA_DOWN),
-		pattern = map(GO_ORA_DOWN),
-		format = "qs"
-	),
-	tar_target(
-		GO_ORA_DOWN_res_tables_formatted,
-		GO_ORA_RT(GO_ORA_DOWN_res_tables_prep),
-		pattern = map(GO_ORA_DOWN_res_tables_prep),
-		format = "qs"
-	),
+	# tar_target(
+	# 	GO_ORA_DOWN_res_tables_prep,
+	# 	ORA_res_table_prep(GO_ORA_DOWN),
+	# 	pattern = map(GO_ORA_DOWN),
+	# 	format = "qs"
+	# ),
+	# tar_target(
+	# 	GO_ORA_DOWN_res_tables_formatted,
+	# 	GO_ORA_RT(GO_ORA_DOWN_res_tables_prep),
+	# 	pattern = map(GO_ORA_DOWN_res_tables_prep),
+	# 	format = "qs"
+	# ),
 	tar_target(
 		GO_ORA_DOWN_emapplot,
 		emapplot(GO_ORA_DOWN[[1]], GO_ORA_DOWN_names_exp),
@@ -503,160 +500,116 @@ list(
 		dotplot(GO_ORA_DOWN[[1]], GO_ORA_DOWN_names_exp),
 		pattern = map(GO_ORA_DOWN_names_exp, GO_ORA_DOWN),
 		format = "qs"
-	),
+	) ######,
 
 	# Report formatting ----
 
-	tar_target(
-		results_formatted,
-		format_results(results_annotated, organism_name),
-		pattern = map(results_annotated),
-		format = "qs"
-	),
-
-	tar_target(
-		results_formatted_filt,
-		results_formatted %>%
-			dplyr::filter(
-				padj < padj_display_cutoff,
-				abs(log2FoldChange) > abslfc_display_cutoff
-			),
-		pattern = map(results_formatted),
-		format = "qs"
-	),
-	tar_target(
-		good_results, ## using this as index for slice() does NOT work
-		##which(nrow(results_formatted_filt) > 1),
-		nrow(results_formatted_filt) > 1,
-		pattern = map(results_formatted_filt),
-		format = "qs"
-	),
-	## -- tmp
-	## tar_target(
-	## 	pairs_restricted,
-	## 	pairs[good_results]
-	## ),
-	## tar_target(
-	## 	sample_table_sub_restricted,
-	## 	sample_table %>% dplyr::filter(condition %in% pairs_restricted[[1]]),
-	## 	pattern = map(pairs_restricted)
-	## ),
-	##
-	## -- tmp
-
-	tar_target(
-		shared_data,
-		SharedData$new(results_formatted_filt),
-		pattern = map(results_formatted_filt),
-		format = "qs"
-	),
-	tar_target(
-		dge_report_tibble,
-
-		tibble::tibble(
-			sample_table_sub = list(sample_table_sub),
-			shared_data = list(shared_data),
-			name = paste0(rev(pairs[[1]]), collapse = "_vs_"),
-			full_dge_file = results_annotated_files,
-			min_cov_dge_file = results_annotated_min_cov_xl,
-			output_file = paste0(
-				here::here(), "/report/dge_report-", name, ".html"
-			),
-			use=good_results ##UG
-		),
-		pattern = map(
-			shared_data, pairs, sample_table_sub,
-			results_annotated_files, results_annotated_min_cov_xl, ##?nonsense
-			good_results ## ?nonsense
-		),
-		format = "qs"
-	),
-	##tar_target( ## UG
-	##	dge_report_tibble,
-	##	dge_report_tibble_full[good_results,]
-	##),
-
-	## UG: see https://github.com/ropensci/targets/issues/256
-	## UG: https://github.com/rstudio/rmarkdown/issues/1632
-	##tar_render(
-	##	dge_report, "dge_report.Rmd",
-	##	params =dge_report_tibble %>% dplyr::filter(use) %>% ## filter by UG
-	##		dplyr::ungroup() %>%
-	##		dplyr::select(-output_file),
-    ##
-	##	output_file = dge_report_tibble$output_file
-	##),
-	## UG: see warning from dge_report: the condition has length  1 and only the first element will be used. line.width does not currently support multiple values.
-	## UG: (but there is no symbol "line.width" in dge_report.Rmd)
-
-	 tarchetypes::tar_render_rep(
-	 	dge_report, "dge_report.Rmd",
-	 	params = dge_report_tibble %>% dplyr::filter(use) %>% dplyr::ungroup()
-	 	#batches = 4
-	 ) ,
-	# Reports ----
-	 tar_target(
-	 	fe_report_tibble, ## suffix _full by UG
-	 	tibble::tibble(
-	 		ont = rep(ontology, length(pairs)),
-
-	 		GO_GSEA_csvs = GO_GSEA_csvs,
-	 		GO_GSEA_res_tables_formatted = GO_GSEA_res_tables_formatted,
-	 		GO_GSEA_emapplot = GO_GSEA_emapplot,
-	 		GO_GSEA_gseaplot2 = GO_GSEA_gseaplot2,
-	 		GO_GSEA_dotplot = GO_GSEA_dotplot,
-
-	 		GO_ORA_UP_csvs = GO_ORA_UP_csvs,
-	 		GO_ORA_UP_res_tables_formatted = GO_ORA_UP_res_tables_formatted,
-	 		GO_ORA_UP_emapplot = GO_ORA_UP_emapplot,
-	 		GO_ORA_UP_dotplot = GO_ORA_UP_dotplot,
-
-	 		GO_ORA_DOWN_csvs = GO_ORA_DOWN_csvs,
-	 		GO_ORA_DOWN_res_tables_formatted = GO_ORA_DOWN_res_tables_formatted,
-	 		GO_ORA_DOWN_emapplot = GO_ORA_DOWN_emapplot,
-	 		GO_ORA_DOWN_dotplot = GO_ORA_DOWN_dotplot,
-
-	 		name = purrr::map_chr(
-	 			rep(pairs, each = length(ontology)),
-	 			~paste0(rev(.x), collapse = "_vs_")
-	 		),
-	 		output_file = purrr::map_chr(
-	 			rep(pairs, each = length(ontology)),
-	 			~paste0(
-	 				here::here(), "/report/fe_report-",
-	 				paste0(rev(.x), collapse = "_vs_"), ".html"
-	 			)
-	 		)
-	 	) %>%
-	 		dplyr::select(-ont) %>%
-	 		dplyr::group_by(name, output_file) %>%
-	 		tidyr::nest(
-	 			GO_ORA_UP = tidyselect::starts_with("GO_ORA_UP"),
-	 			GO_ORA_DOWN = tidyselect::starts_with("GO_ORA_DOWN"),
-	 			GO_GSEA = tidyselect::starts_with("GO_GSEA")
-			), #%>%  ### new!
-			# dplyr::ungroup() %>%
-			# dplyr::mutate(tar_group = dplyr::row_number()) %>%
-			# as.data.frame(),
-		format = "qs"
-	),
-	tarchetypes::tar_render_rep(
-  	    fe_report, "fe_report.Rmd",
-		params = fe_report_tibble#,
-	    #iteration = "list"
-        #batches = 4
-	),
-	##tar_target( ## UG
-	##	fe_report_tibble,
-	##	fe_report_tibble_full[good_results,]
-	##),
-    ##tar_render(
-    ##	fe_report, "fe_report.Rmd",
-##	params = fe_report_tibble %>%
-##			dplyr::ungroup() %>%
-##			dplyr::select(-output_file),
-##		output_file = fe_report_tibble$output_file
-##	),
-	##tar_render(over_dge_report, "dge_overview.Rmd"), ##UG: cannot open the connection
-	tar_render(methods, "methods.Rmd")
+# 	tar_target(
+# 		results_formatted,
+# 		format_results(results_annotated, organism_name),
+# 		pattern = map(results_annotated),
+# 		format = "qs"
+# 	),
+#
+# 	tar_target(
+# 		results_formatted_filt,
+# 		results_formatted %>%
+# 			dplyr::filter(
+# 				padj < padj_display_cutoff,
+# 				abs(log2FoldChange) > abslfc_display_cutoff
+# 			),
+# 		pattern = map(results_formatted),
+# 		format = "qs"
+# 	),
+# 	tar_target(
+# 		good_results, ## using this as index for slice() does NOT work
+# 		##which(nrow(results_formatted_filt) > 1),
+# 		nrow(results_formatted_filt) > 1,
+# 		pattern = map(results_formatted_filt),
+# 		format = "qs"
+# 	),
+#
+# 	tar_target(
+# 		shared_data,
+# 		SharedData$new(results_formatted_filt),
+# 		pattern = map(results_formatted_filt),
+# 		format = "qs"
+# 	),
+# 	tar_target(
+# 		dge_report_tibble,
+#
+# 		tibble::tibble(
+# 			sample_table_sub = list(sample_table_sub),
+# 			shared_data = list(shared_data),
+# 			name = paste0(rev(pairs[[1]]), collapse = "_vs_"),
+# 			full_dge_file = results_annotated_files,
+# 			min_cov_dge_file = results_annotated_min_cov_xl,
+# 			output_file = paste0(
+# 				here::here(), "/report/dge_report-", name, ".html"
+# 			),
+# 			use=good_results ##UG
+# 		),
+# 		pattern = map(
+# 			shared_data, pairs, sample_table_sub,
+# 			results_annotated_files, results_annotated_min_cov_xl, ##?nonsense
+# 			good_results ## ?nonsense
+# 		),
+# 		format = "qs"
+# 	),
+#
+# 	 tarchetypes::tar_render_rep(
+# 	 	dge_report, "dge_report.Rmd",
+# 	 	params = dge_report_tibble %>% dplyr::filter(use) %>% dplyr::ungroup()
+# 	 	#batches = 4
+# 	 ) ,
+# 	# Reports ----
+# 	 tar_target(
+# 	 	fe_report_tibble, ## suffix _full by UG
+# 	 	tibble::tibble(
+# 	 		ont = rep(ontology, length(pairs)),
+#
+# 	 		GO_GSEA_csvs = GO_GSEA_csvs,
+# 	 		GO_GSEA_res_tables_formatted = GO_GSEA_res_tables_formatted,
+# 	 		GO_GSEA_emapplot = GO_GSEA_emapplot,
+# 	 		GO_GSEA_gseaplot2 = GO_GSEA_gseaplot2,
+# 	 		GO_GSEA_dotplot = GO_GSEA_dotplot,
+#
+# 	 		GO_ORA_UP_csvs = GO_ORA_UP_csvs,
+# 	 		GO_ORA_UP_res_tables_formatted = GO_ORA_UP_res_tables_formatted,
+# 	 		GO_ORA_UP_emapplot = GO_ORA_UP_emapplot,
+# 	 		GO_ORA_UP_dotplot = GO_ORA_UP_dotplot,
+#
+# 	 		GO_ORA_DOWN_csvs = GO_ORA_DOWN_csvs,
+# 	 		GO_ORA_DOWN_res_tables_formatted = GO_ORA_DOWN_res_tables_formatted,
+# 	 		GO_ORA_DOWN_emapplot = GO_ORA_DOWN_emapplot,
+# 	 		GO_ORA_DOWN_dotplot = GO_ORA_DOWN_dotplot,
+#
+# 	 		name = purrr::map_chr(
+# 	 			rep(pairs, each = length(ontology)),
+# 	 			~paste0(rev(.x), collapse = "_vs_")
+# 	 		),
+# 	 		output_file = purrr::map_chr(
+# 	 			rep(pairs, each = length(ontology)),
+# 	 			~paste0(
+# 	 				here::here(), "/report/fe_report-",
+# 	 				paste0(rev(.x), collapse = "_vs_"), ".html"
+# 	 			)
+# 	 		)
+# 	 	) %>%
+# 	 		dplyr::select(-ont) %>%
+# 	 		dplyr::group_by(name, output_file) %>%
+# 	 		tidyr::nest(
+# 	 			GO_ORA_UP = tidyselect::starts_with("GO_ORA_UP"),
+# 	 			GO_ORA_DOWN = tidyselect::starts_with("GO_ORA_DOWN"),
+# 	 			GO_GSEA = tidyselect::starts_with("GO_GSEA")
+# 			),
+# 		format = "qs"
+# 	),
+# 	tarchetypes::tar_render_rep(
+#   	    fe_report, "fe_report.Rmd",
+# 		params = fe_report_tibble#,
+# 	    #iteration = "list"
+#         #batches = 4
+# 	),
+#	tar_render(methods, "methods.Rmd")
 )
