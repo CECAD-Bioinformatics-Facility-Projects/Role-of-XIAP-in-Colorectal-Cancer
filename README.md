@@ -9,13 +9,15 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 - A local [targets](https://books.ropensci.org/targets/) pipeline computes `Differential Gene Expression (DGE)`, `Gene Set Enrichment Analysis (GSEA)`, and other high-level result objects from the quant.sf files 
 - `Downstream scripts post-process and visualize` these targets objects 
 
-## Software structure
-
-Both scripts come with a `renv.lock` file describing the expected environment of execution.
-
 
 ## Repository structure
 
+- `reproduce_targets/`: This rstudio project folder is meant for the documentation and possible re-execution of the 
+targets pipeline. It contains the _targets.R pipeline script, local functions in R/, a renv.lock file documenting the package environment, and the metadata of the experiment in `design.csv`. See the folder specific README file for instructions on how to set up the rstudio project, download the input quant.sf files from [Figshare](), and run the pipeline. 
+
+- `reproduce_figures/`: This separate rstudio project folder contains the code for reproducing Figures x and y of the paper, plus local functions in R/ and the package environment in renv.lock. The code depends on the objects created by the targets pipeline. We provide a tarball of the pre-computed objects on [Figshare](). (Alternatively you can create the objects yourself by re-running the pipeline.)
+
+Both projects use R-4.1.2, the R version under which the the original targets pipeline was written. Nevertheless they must be kept separate because of version conflicts for some packages.  
 
 
 ## Environment
