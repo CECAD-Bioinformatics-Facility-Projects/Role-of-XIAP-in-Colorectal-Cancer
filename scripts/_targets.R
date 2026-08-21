@@ -4,8 +4,7 @@ source("R/functions.R")
 source("R/functional_enrichment.R")
 options(tidyverse.quiet = TRUE)
 
-# use_seed <- sample(1000:9999,size=1)
-# set.seed(use_seed)
+if(!dir.exists("out")) dir.create("out")
 
 tar_option_set(packages = c(
 	"dplyr",
