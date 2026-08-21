@@ -10,7 +10,7 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 - `Downstream scripts post-process and visualize` these targets objects 
 
 
-## Repository structure
+## Repository content
 
 This repository has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for figures of the submitted paper. In addition, transcripts in the initial analysis had been annotated using Ensembl v103, while the reads had actually been mapped to the v105 mouse genome build. 
 
@@ -83,6 +83,24 @@ Typing
 - `gene_volcano` is an R list with two entries:
     `gene_volcano$all` prints a volcano plot of all genes
     `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
+
+<ins>**NOTE**</ins> To produce the same figures with output of the pipeline using v105, run
+
+```{r switch_environment}
+library(targets)
+source(R/functions.R)
+
+set.seed(6733)
+
+setEnsVersion(infile =  "scripts/reproduce_figures_template.R",
+              outfile = "scripts/reproduce_figures105.R",
+              version = "105")
+source("scripts/reproduce_figures105.R")
+```
+This will produces the same variables as above, but now based on the Ensembl v105 targets.
+Note that this will overwrite the v103 variables -- save them before under a different name if needed!
+
+
 
 ## Version control
 Git and GitHub are configured automatically by this setup script.
