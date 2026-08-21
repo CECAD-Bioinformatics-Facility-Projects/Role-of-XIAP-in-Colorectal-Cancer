@@ -1,6 +1,8 @@
-get_orgDb <- function(organism_name) {
+get_orgDb <- function(organism_name,
+                      use_cache="/home/rstudio/project/.cache/AnnotationHub" ## UG added Aug 21, 2026
+                      ) {
 	orgDb <- function() {
-		AH <- AnnotationHub::AnnotationHub(cache = "~/.cache/AnnotationHub")
+		AH <- AnnotationHub::AnnotationHub(cache = use_cache)
 		OrgDB <- AnnotationHub::query(
 			AH, pattern = c(organism_name, "OrgDB")
 		)[[1]]
@@ -13,11 +15,11 @@ get_orgDb <- function(organism_name) {
 dds_res_GSEA <- function(
 	dds_res_anno, orgDb, ontology, keyType = "SYMBOL", ...
 ) {
-	dds_res_anno_lfcsort <- dds_res_anno %>% 
+	dds_res_anno_lfcsort <- dds_res_anno %>%
 		dplyr::arrange(desc(log2FoldChange))
 	dds_res_anno_lfcsort_gse <- dds_res_anno_lfcsort$log2FoldChange
 	names(dds_res_anno_lfcsort_gse) <- dds_res_anno_lfcsort$symbol
-	
+
 	res <- clusterProfiler::gseGO(
 		geneList = dds_res_anno_lfcsort_gse,
 		ont = ontology,
@@ -26,7 +28,7 @@ dds_res_GSEA <- function(
 		...
 	)
 	res <- list(res)
-	# 
+	#
 	#names(res) <- ontology
 	return(res)
 }
@@ -34,10 +36,10 @@ dds_res_GSEA <- function(
 ##dds_res_ORA <- function(
 ##	dds_res_anno, orgDb, ontology, FDR = 0.05, keyType = "SYMBOL", ...
 ##) {
-##	DE_genes <- dds_res_anno %>% 
+##	DE_genes <- dds_res_anno %>%
 ##		dplyr::filter(padj < FDR) %>%
 ##		dplyr::pull(symbol)
-##	
+##
 ##	res <- clusterProfiler::enrichGO(
 ##		gene = DE_genes,
 ##		universe = dds_res_anno$symbol,
@@ -46,10 +48,10 @@ dds_res_GSEA <- function(
 ##		keyType = keyType,
 ##		...
 ##	)
-##	
-##	res@result <- res@result %>% 
+##
+##	res@result <- res@result %>%
 ##		dplyr::filter(p.adjust < res@pvalueCutoff, qvalue < res@qvalueCutoff)
-##	
+##
 ##	res <- list(res)
 ##	#names(res) <- ontology
 ##	return(res)
@@ -63,14 +65,14 @@ emptyEnrichResult <- function(ontology,
 	## the colnames and the column types are retained
 	df <- data.frame(ID="1",
 					 Description="1",
-					 GeneRatio="1", 
-					 BgRatio="1", 
+					 GeneRatio="1",
+					 BgRatio="1",
 					 pvalue=1.0,
 					 p.adjust=1.0,
 					 qvalue=1.0,
 					 geneID="1",
 					 Count=1)[-1,]
-	
+
 	new("enrichResult", result = df,
 		gene=c("1")[-1], ## c() does NOT work!
 		ontology=ontology,
@@ -80,10 +82,10 @@ emptyEnrichResult <- function(ontology,
 dds_res_ORA <- function(
 		dds_res_anno, orgDb, ontology, FDR = 0.05, keyType = "SYMBOL", ...
 ) {
-	DE_genes <- dds_res_anno %>% 
+	DE_genes <- dds_res_anno %>%
 		dplyr::filter(padj < FDR) %>%
 		dplyr::pull(symbol)
-	
+
 	if(length(DE_genes)==0) { ## BEGIN UG
 		res <- emptyEnrichResult(ontology,
 								 AnnotationDbi::species(orgDb),
@@ -103,7 +105,7 @@ dds_res_ORA <- function(
 								 AnnotationDbi::species(orgDb),
 								 keyType)
 	} else { ## END UG
-		res@result <- res@result %>% 
+		res@result <- res@result %>%
 			dplyr::filter(p.adjust < res@pvalueCutoff, qvalue < res@qvalueCutoff)
 	}
 	res <- list(res)
@@ -121,9 +123,9 @@ GSEA_res_table_prep <- function(GSEA_result) {
 			)
 		) %>% as.data.frame()
 	}
-	
-	GSEA_result %>% 
-		tibble::as_tibble() %>% 
+
+	GSEA_result %>%
+		tibble::as_tibble() %>%
 		dplyr::mutate(
 			core_enrichment_l = strsplit(core_enrichment, split = "/"),
 			n = purrr::map_int(core_enrichment_l, length),
@@ -151,15 +153,15 @@ ORA_res_table_prep <- function(ORA_result) {
     qvalue = double(),
     geneID = character()
   )
-  
+
   if(is.null(ORA_result[[1]])) {
     return(df)
   }
-  
+
   if(nrow(ORA_result[[1]]@result) == 0) {
     return(df)
   }
-  
+
   ORA_result <- ORA_result[[1]]@result %>% as.data.frame()
   ORA_result %>%
     tibble::as_tibble() %>%
@@ -219,7 +221,7 @@ GSEA_res_DT_table <- function(GSEA_tab) {
 	) %>%
 		DT::formatSignif(
 			c("percent", "pvalue", "p.adjust", "qvalues", "enrichmentScore", "NES"), digits = 4 #,"qvalue" !s?
-		) %>% 
+		) %>%
 		DT::formatStyle(
 			"pvalue",
 			backgroundColor = pvalpal(GSEA_tab$pvalue)
@@ -265,7 +267,7 @@ ORA_res_DT_table <- function(ORA_tab) {
 	) %>%
 		DT::formatSignif(
 			c("percent", "pvalue", "p.adjust", "qvalue", "GeneRatio", "BgRatio"), digits = 4 #,"qvalue" !s?
-		) %>% 
+		) %>%
 		DT::formatStyle(
 			"pvalue",
 			backgroundColor = pvalpal(ORA_tab$pvalue)
@@ -284,8 +286,8 @@ dotplot <- function(data, title, ...) {
   if(is.null(data)) { return(list("Insufficient data for plot")) }
   if(nrow(data@result) == 0) { return(list("Insufficient data for plot")) }
   suppressMessages(plot <- list(
-    enrichplot::dotplot(data, orderBy = "x", ...) + 
-      scico::scale_colour_scico(palette = "batlow") + 
+    enrichplot::dotplot(data, orderBy = "x", ...) +
+      scico::scale_colour_scico(palette = "batlow") +
       ggplot2::labs(title = title)
   ))
   plot
@@ -296,7 +298,7 @@ emapplot <- function(data, title, ...) {
   if(is.null(data)) { return(list("Insufficient data for plot")) }
   if(nrow(data@result) < 2) { return(list("Insufficient data for plot")) }
   suppressMessages(plot <- list(
-    enrichplot::emapplot(enrichplot::pairwise_termsim(data), ...) + 
+    enrichplot::emapplot(enrichplot::pairwise_termsim(data), ...) +
       scico::scale_colour_scico(palette = "batlow") +
       ggplot2::labs(title = title)
   ))
@@ -308,12 +310,12 @@ gseaplot2 <- function(data, geneSetID = 1:10, ...) {
   if(is.null(data@result)) {
     return(list("Insufficient data for plot"))
   }
-  
+
   nrres <- nrow(data@result)
   if(nrres == 0) {
     return(list("Insufficient data for plot"))
   }
-  
+
   if(max(geneSetID) > nrres) {
     geneSetID <- 1:nrres
   }
@@ -389,7 +391,7 @@ gseaplot2 <- function(data, geneSetID = 1:10, ...) {
 #' 		'```',
 #' 		''
 #' 	)
-#' 	
+#'
 #' 	if (testing == TRUE) {
 #' 		return(text)
 #' 	}
@@ -473,7 +475,7 @@ gen_pathview_plot_section <- function(
 		'```',
 		''
 	)
-	
+
 	if (testing == TRUE) {
 		return(text)
 	}
@@ -510,16 +512,16 @@ gen_pathview_plot_section <- function(
 #' 		'',
 #' 		'```{r}',
 #' 		'downloadthis::download_file(
-#' 			path = ', 
-#' 		data %>% 
-#' 			dplyr::select(tidyselect::ends_with("_csvs")) %>% 
+#' 			path = ',
+#' 		data %>%
+#' 			dplyr::select(tidyselect::ends_with("_csvs")) %>%
 #' 			dplyr::pull(),
 #' 		',
 #' 			output_name = ',
-#' 		data %>% 
-#' 			dplyr::select(tidyselect::ends_with("_csvs")) %>% 
+#' 		data %>%
+#' 			dplyr::select(tidyselect::ends_with("_csvs")) %>%
 #' 			dplyr::pull() %>%
-#' 			fs::path_file() %>% 
+#' 			fs::path_file() %>%
 #' 			fs::path_ext_remove()
 #' 		,',
 #' 			output_extension = ".csv",
@@ -532,8 +534,8 @@ gen_pathview_plot_section <- function(
 #' 		'',
 #' 		'```{r, out.width = "960px", out.height = "960px", dpi = 600, message=FALSE, warning=FALSE}',
 #' 		# 'DT::datatable(data@result)',
-#' 		data %>% 
-#' 			dplyr::select(tidyselect::ends_with("_res_tables_formatted")) %>% 
+#' 		data %>%
+#' 			dplyr::select(tidyselect::ends_with("_res_tables_formatted")) %>%
 #' 			dplyr::pull(),
 #' 		'```',
 #' 		switch(
@@ -543,8 +545,8 @@ gen_pathview_plot_section <- function(
 #' 				'### GSEA plot',
 #' 				'',
 #' 				'```{r, out.width = "960px", out.height = "960px", dpi = 600, message=FALSE, warning=FALSE}',
-#' 				data %>% 
-#' 					dplyr::select(tidyselect::ends_with("_gseaplot2")) %>% 
+#' 				data %>%
+#' 					dplyr::select(tidyselect::ends_with("_gseaplot2")) %>%
 #' 					dplyr::pull(),
 #' 				'```'
 #' 			),
@@ -555,8 +557,8 @@ gen_pathview_plot_section <- function(
 #' 		'',
 #' 		'```{r, out.width = "960px", out.height = "960px", dpi = 600, message=FALSE, warning=FALSE}',
 #' 		#'dotplot(data, title, showCategory = 20)',
-#' 		data %>% 
-#' 			dplyr::select(tidyselect::ends_with("_dotplot")) %>% 
+#' 		data %>%
+#' 			dplyr::select(tidyselect::ends_with("_dotplot")) %>%
 #' 			dplyr::pull(),
 #' 		'```',
 #' 		'',
@@ -564,13 +566,13 @@ gen_pathview_plot_section <- function(
 #' 		'',
 #' 		'```{r, out.width = "960px", out.height = "960px", dpi = 600, message=FALSE, warning=FALSE}',
 #' 		# 'emapplot(data, title)',
-#' 		data %>% 
-#' 			dplyr::select(tidyselect::ends_with("_emapplot")) %>% 
+#' 		data %>%
+#' 			dplyr::select(tidyselect::ends_with("_emapplot")) %>%
 #' 			dplyr::pull(),
 #' 		'```',
 #' 		''
 #' 	)
-#' 	
+#'
 #' 	if (testing == TRUE) {
 #' 		return(text)
 #' 	}
@@ -599,7 +601,7 @@ bar_chart_pos_neg <- function(
 	neg_chart <- htmltools::div(style = list(flex = "1 1 0"))
 	pos_chart <- htmltools::div(style = list(flex = "1 1 0"))
 	width <- paste0(abs(value / max_value) * 100, "%")
-	
+
 	if (value < 0) {
 		bar <- htmltools::div(
 			style = list(
@@ -626,7 +628,7 @@ bar_chart_pos_neg <- function(
 		)
 		pos_chart <- htmltools::tagAppendChild(pos_chart, chart)
 	}
-	
+
 	htmltools::div(style = list(display = "flex"), neg_chart, pos_chart)
 }
 
@@ -634,7 +636,7 @@ bar_chart_pos_neg <- function(
 scale_check_set_default_on_fail <- function(vec, default) {
 	vecf <- vec[is.finite(vec)]
 	# needs at least 3 unique finite values to make a colour scale
-	if(length(unique(vecf)) <= 3) { 
+	if(length(unique(vecf)) <= 3) {
 		return(default)
 	}
 	# set and any infinite values to NA which can be handled by the colour scale
@@ -647,11 +649,11 @@ scale_check_set_default_on_fail <- function(vec, default) {
 #q_scale_val <- scale_check_set_default_on_fail(data$qvalues, seq(0, 1, 0.2))
 
 GO_GSEA_RT <- function(data) {
-  
+
   if(nrow(data) == 0) {
     return(list("No results"))
   }
-  
+
   q_scale_val <- data$qvalues[is.finite(data$qvalues)]
   if(length(q_scale_val) <= 1) {q_scale_val <- seq(0, 1, 0.2)}
   qvaluesf <- colourScaleR::universal_colour_scaler(
@@ -659,7 +661,7 @@ GO_GSEA_RT <- function(data) {
     type = "scico", palette = "hawaii", mode = "closure", direction = 1,
     n_breaks = 9
   )
-  
+
   padj_scale_val <- data$p.adjust[is.finite(data$p.adjust)]
   if(length(padj_scale_val) <= 1) {padj_scale_val <- seq(0, 1, 0.2)}
   p.adjustf <- colourScaleR::universal_colour_scaler(
@@ -667,7 +669,7 @@ GO_GSEA_RT <- function(data) {
     type = "scico", palette = "hawaii", mode = "closure", direction = 1,
     n_breaks = 9
   )
-  
+
   p_scale_val <- data$pvalue[is.finite(data$pvalue)]
   if(length(p_scale_val) <= 1) {p_scale_val <- seq(0, 1, 0.2)}
   pvaluef <- colourScaleR::universal_colour_scaler(
@@ -675,7 +677,7 @@ GO_GSEA_RT <- function(data) {
     type = "scico", palette = "hawaii", mode = "closure", direction = 1,
     n_breaks = 9
   )
-  
+
   pc_scale_val <- data$percent[is.finite(data$percent)]
   if(length(pc_scale_val) <= 1) {pc_scale_val <- seq(0, 1, 0.2)}
   percentf <- colourScaleR::universal_colour_scaler(
@@ -683,7 +685,7 @@ GO_GSEA_RT <- function(data) {
     type = "viridis", palette = "viridis", mode = "closure", direction = 1,
     n_breaks = 9
   )
-  
+
   es_up_scale_val <- data$enrichmentScore[
     data$enrichmentScore >= 0 & is.finite(data$enrichmentScore)
   ]
@@ -693,7 +695,7 @@ GO_GSEA_RT <- function(data) {
     type = "brewer", palette = "RdBu", mode = "closure", direction = -1, #"RdYlBu"
     n_breaks = 8, begin = 0.6, end = 1
   )
-  
+
   es_dwn_scale_val <- data$enrichmentScore[
     data$enrichmentScore < 0 & is.finite(data$enrichmentScore)
   ]
@@ -703,7 +705,7 @@ GO_GSEA_RT <- function(data) {
     type = "brewer", palette = "RdBu", mode = "closure", direction = -1,
     n_breaks = 9, begin = 0, end = 0.4
   )
-  
+
   nes_up_scale_val <- data$NES[data$NES >= 0 & is.finite(data$NES)]
   if(length(nes_up_scale_val) >= 0) {nes_up_scale_val <- seq(0,1,0.2)}
   NESupf <- colourScaleR::universal_colour_scaler(
@@ -711,7 +713,7 @@ GO_GSEA_RT <- function(data) {
     type = "brewer", palette = "RdBu", mode = "closure", direction = -1, #"RdYlBu"
     n_breaks = 8, begin = 0.6, end = 1
   )
-  
+
   nes_dwn_scale_val <- data$NES[data$NES < 0 & is.finite(data$NES)]
   if(length(nes_dwn_scale_val) <= 1) {nes_dwn_scale_val <- -seq(0,1,0.2)}
   NESdownf <- colourScaleR::universal_colour_scaler(
@@ -719,8 +721,8 @@ GO_GSEA_RT <- function(data) {
     type = "brewer", palette = "RdBu", mode = "closure", direction = -1,
     n_breaks = 9, begin = 0, end = 0.4
   )
-  
-  table <- 
+
+  table <-
     data %>% reactable::reactable(
       details = function(index) {
         htmltools::div(
@@ -811,44 +813,44 @@ GO_GSEA_RT <- function(data) {
 }
 
 GO_ORA_RT <- function(data, height = 900) {
-	
+
 	if(is.null(data)) {
 		return(list("No results"))
 	}
-	
+
 	if(nrow(data) == 0) {
 		return(list("No results"))
 	}
-	
+
 	q_scale_val <- scale_check_set_default_on_fail(data$qvalue, seq(0, 1, 0.2))
 	qvaluef <- colourScaleR::universal_colour_scaler(
 		q_scale_val,
 		type = "scico", palette = "hawaii", mode = "closure", direction = 1,
 		n_breaks = 9
 	)
-	
+
 	padj_scale_val <- scale_check_set_default_on_fail(data$p.adjust, seq(0, 1, 0.2))
 	p.adjustf <- colourScaleR::universal_colour_scaler(
 		padj_scale_val,
 		type = "scico", palette = "hawaii", mode = "closure", direction = 1,
 		n_breaks = 9
 	)
-	
+
 	p_scale_val <- scale_check_set_default_on_fail(data$pvalue, seq(0, 1, 0.2))
 	pvaluef <- colourScaleR::universal_colour_scaler(
 		p_scale_val,
 		type = "scico", palette = "hawaii", mode = "closure", direction = 1,
 		n_breaks = 9
 	)
-	
+
 	pc_scale_val <- scale_check_set_default_on_fail(data$percent, seq(0, 1, 0.2))
 	percentf <- colourScaleR::universal_colour_scaler(
 		pc_scale_val,
 		type = "viridis", palette = "viridis", mode = "closure", direction = 1,
 		n_breaks = 9
 	)
-	
-	table <- 
+
+	table <-
 		data %>% reactable::reactable(
 			details = function(index) {
 				htmltools::div(
@@ -972,7 +974,7 @@ get_pair_names <- function(pairs, names_exp) {
 	purrr::map(pairs, ~{
 		paste0(
 			gsub(
-				"[^\\w-]+", "_", 
+				"[^\\w-]+", "_",
 				gsub(", ", "-", gsub("-", "_", names_exp)),
 				perl = TRUE
 			),
