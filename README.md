@@ -29,7 +29,7 @@ then restart R and enter in the R console:
 ```{r switch_environment}
 renv::restore(clean=TRUE)
 ```
-and re-start R again.
+and re-start R again. (Ignore the warning about the renv version.)
 
 To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock accordingly.
 
@@ -37,6 +37,7 @@ To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lo
 
 After activating the `TARGETS` environment, do 
 ```{r switch_environment}
+
 library(targets)
 set.seed(6733)
 
@@ -49,18 +50,40 @@ Running the pipeline is only necessary if you want to verify the output. If you 
 
 The separate folders allow to judge the input of the version difference (which is minor).  
 
-<ins>NOTE</ins>  
+<ins>NOTE 1</ins>  The `_targets.R` script uses version 103 by default, because this was the initial version. To re-run the pipeline with v105, do
 
-### The Figure Code
+```{r switch_environment}
+library(targets)
+source(R/functions.R)
 
+set.seed(6733)
 
-`
+setEnsVersion(infile =  "scripts/_targets_template.R",
+              outfile = "scripts/_targets105.R",
+              version = "105")
+tar_make(script="scripts/_targets105.R", 
+         store="my_targets105"))
+```
 
+### The Figures Code
 
+After switching to the FIGURES environment (see above), do
 
-## Environment
-This project uses **renv** for reproducibility.
-Run `renv::restore()` to install the correct package versions.
+```{r draw_figures}
+source("scripts/reproduce_figures.R")
+```
+
+The script will by default read the `precomputed_targets103` folder. It uses the GSEA and differential gene expression results stored from the  targets pipeline to visualize enriched Gene Ontology terms and differentially expressed genes in the KI versus the WT genotype. 
+
+Figures are stored as variables in the environment. 
+
+Typing
+
+- `GSEA_plot` prints a GSEA plot
+- `gene_set_volcano` prints a volcano plot of the relative enrichment or depletion of individual Gene Ontology terms in KI vs WT
+- `gene_volcano` is an R list with two entries:
+    `gene_volcano$all` prints a volcano plot of all genes
+    `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
 
 ## Version control
 Git and GitHub are configured automatically by this setup script.
