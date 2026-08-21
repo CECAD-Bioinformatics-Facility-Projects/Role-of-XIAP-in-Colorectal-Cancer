@@ -37,20 +37,19 @@ To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lo
 
 After activating the `TARGETS` environment, do 
 ```{r switch_environment}
-
 library(targets)
 set.seed(6733)
 
 tar_make(script="scripts/targets.R", store=[MY_STORE])
 ```
 
-where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`. The seed assures the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm.
+where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm.
 
 Running the pipeline is only necessary if you want to verify the output. If you are only interested in using the output, we offer two pre-filled target stores: `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. 
 
 The separate folders allow to judge the input of the version difference (which is minor).  
 
-<ins>NOTE 1</ins>  The `_targets.R` script uses version 103 by default, because this was the initial version. To re-run the pipeline with v105, do
+<ins>**NOTE**</ins>  The `_targets.R` script uses Ensembl version 103 by default, because this was the initial version. To re-run the pipeline with v105, run
 
 ```{r switch_environment}
 library(targets)
@@ -67,7 +66,7 @@ tar_make(script="scripts/_targets105.R",
 
 ### The Figures Code
 
-After switching to the FIGURES environment (see above), do
+After switching to the FIGURES environment (see above), run
 
 ```{r draw_figures}
 source("scripts/reproduce_figures.R")
