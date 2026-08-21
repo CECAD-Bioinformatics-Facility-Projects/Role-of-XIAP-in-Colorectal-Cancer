@@ -16,7 +16,7 @@ This repository has to deal with a partial R environment incompatibility between
 
 ### R environments
 
-The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the two initial and the recent analysis. Hence both cannot be united in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
+The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. To activate the `FIGURES` environment, enter on a linux-type command line:
 
@@ -37,14 +37,18 @@ To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lo
 
 After activating the `TARGETS` environment, do 
 ```{r switch_environment}
-
 library(targets)
+set.seed(6733)
+
 tar_make(script="scripts/targets.R", store=[MY_STORE])
 ```
 
-where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`.
+where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`. The seed assures the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm.
 
-The repository contains two pre-computed target stores, `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. The separate folders allow to judge the input of the version difference (which is minor). 
+Running the pipeline is only necessary if you want to verify the output. If you are only interested in using the output, we offer two pre-filled target stores: `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. 
+
+The separate folders allow to judge the input of the version difference (which is minor).  
+
 
 
 ### The Figure Code
@@ -52,12 +56,6 @@ The repository contains two pre-computed target stores, `precomputed_targets103`
 
 `
 
-- `reproduce_targets/`: This rstudio project folder is meant for the documentation and possible re-execution of the 
-targets pipeline. It contains the _targets.R pipeline script, local functions in R/, a renv.lock file documenting the package environment, and the metadata of the experiment in `design.csv`. See the folder specific README file for instructions on how to set up the rstudio project, download the input quant.sf files from [Figshare](), and run the pipeline. 
-
-- `reproduce_figures/`: This separate rstudio project folder contains the code for reproducing Figures x and y of the paper, plus local functions in R/ and the package environment in renv.lock. The code depends on the objects created by the targets pipeline. We provide a tarball of the pre-computed objects on [Figshare]() (alternatively you can create the objects yourself by re-running the pipeline). See the folder specific README for details.
-
-Both projects use R-4.1.2, the R version under which the the original targets pipeline was written. Nevertheless they must be kept separate because of version conflicts for some packages.  
 
 
 ## Environment
