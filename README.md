@@ -49,7 +49,7 @@ Running the pipeline is only necessary if you want to verify the output. If you 
 
 The separate folders allow to judge the input of the version difference (which is minor).  
 
-
+<ins>NOTE</ins>  
 
 ### The Figure Code
 
