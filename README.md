@@ -35,7 +35,7 @@ To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lo
 
 ### The Targets Pipeline
 
-After activating the `TARGETS` environment, do 
+After activating the `TARGETS` environment, run
 ```{r switch_environment}
 library(targets)
 set.seed(6733)
