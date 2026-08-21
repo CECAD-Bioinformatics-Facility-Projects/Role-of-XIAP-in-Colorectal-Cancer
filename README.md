@@ -53,15 +53,15 @@ The separate folders allow to judge the input of the version difference (which i
 
 ```{r switch_environment}
 library(targets)
-source(R/functions.R)
+source("R/functions.R")
 
 set.seed(6733)
-
 setEnsVersion(infile =  "scripts/_targets_template.R",
               outfile = "scripts/_targets105.R",
               version = "105")
 tar_make(script="scripts/_targets105.R", 
-         store="my_targets105"))
+         store="my_targets105")
+
 ```
 
 ### The Figures Code
@@ -84,21 +84,29 @@ Typing
     `gene_volcano$all` prints a volcano plot of all genes
     `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
 
+Save the variables before you run the script again, to prevent over-writing:
+
+```{r save var}
+GSEA_plot103 <- GSEA_plot
+gene_set_volcano103 <- gene_set_volcano
+gene_volcano103 <- gene_volcano
+```
+
 <ins>**NOTE**</ins> To produce the same figures with output of the pipeline using v105, run
 
 ```{r switch_environment}
 library(targets)
-source(R/functions.R)
+source("R/functions.R")
 
 set.seed(6733)
 
-setEnsVersion(infile =  "scripts/reproduce_figures_template.R",
-              outfile = "scripts/reproduce_figures105.R",
-              version = "105")
+setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
+                   outfile = "scripts/reproduce_figures105.R",
+                   use_store = "precomputed105")
 source("scripts/reproduce_figures105.R")
+
 ```
 This will produces the same variables as above, but now based on the Ensembl v105 targets.
-Note that this will overwrite the v103 variables -- save them before under a different name if needed!
 
 
 
