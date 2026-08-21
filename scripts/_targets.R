@@ -4,6 +4,8 @@ source("R/functions.R")
 source("R/functional_enrichment.R")
 options(tidyverse.quiet = TRUE)
 
+# use_seed <- sample(1000:9999,size=1)
+# set.seed(use_seed)
 
 tar_option_set(packages = c(
 	"dplyr",
@@ -41,7 +43,7 @@ debug="dge_report"
 list(
   tar_target( ## <<<------ SET ENSEMBL VERSION TO BE USED
     use_ensembl,
-    105
+    103
   ),
 
 	# Differential Expression Analysis ----
@@ -284,7 +286,8 @@ list(
 		res_annot_wide_counts_xl(
 			results_annotated_min_cov_wide_counts,
 			"DGE comparisons with counts",
-			"out/dge_results/results_annotated_min_cov_wide_counts.xlsx"
+			paste0("out/dge_results/results_annotated_min_cov_wide_counts",
+			       ".xlsx")
 		)
 	),
 	tar_target(
@@ -300,7 +303,8 @@ list(
 		res_annot_wide_counts_xl(
 			results_annotated_min_cov_wide_counts_vst,
 			"DGE comparisons with counts",
-			"out/dge_results/results_annotated_min_cov_wide_counts_vst.xlsx"
+			paste0("out/dge_results/results_annotated_min_cov_wide_counts_vst",
+			".xlsx")
 		)
 	),
 	# Functional Enrichment analysis ----
@@ -317,7 +321,8 @@ list(
 		dds_res_GSEA(
 			results_annotated_min_cov,
 			orgDb(),
-			ontology = ontology
+			ontology = ontology,
+			seed = TRUE
 		),
 		pattern = cross(results_annotated_min_cov, ontology),
 		format = "qs"
@@ -341,7 +346,8 @@ list(
 	tar_target(
 		GO_GSEA_csvs,
 		write_FE(
-			GO_GSEA, GO_GSEA_names_pairs, "GSEA", "out/GSEA"
+			GO_GSEA, GO_GSEA_names_pairs, "GSEA",
+			"out/GSEA"
 		),
 		pattern = map(GO_GSEA_names_pairs, GO_GSEA),
 		format = "file"
@@ -409,7 +415,8 @@ list(
 	tar_target(
 		GO_ORA_UP_csvs,
 		write_FE(
-			GO_ORA_UP, GO_ORA_UP_names_pairs, "ORA", "out/ORA_up"
+			GO_ORA_UP, GO_ORA_UP_names_pairs, "ORA",
+			"out/ORA_up"
 		),
 		pattern = map(GO_ORA_UP_names_pairs, GO_ORA_UP),
 		format = "file"
@@ -471,7 +478,8 @@ list(
 	tar_target(
 		GO_ORA_DOWN_csvs,
 		write_FE(
-			GO_ORA_DOWN, GO_ORA_DOWN_names_pairs, "ORA", "out/ORA_down"
+			GO_ORA_DOWN, GO_ORA_DOWN_names_pairs, "ORA",
+			"out/ORA_down"
 		),
 		pattern = map(GO_ORA_DOWN_names_pairs, GO_ORA_DOWN),
 		format = "file"
