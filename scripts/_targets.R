@@ -1,9 +1,11 @@
 library(targets)
 ##library(tarchetypes)
 source("R/functions.R")
+
 source("R/functional_enrichment.R")
 options(tidyverse.quiet = TRUE)
 
+Sys.setenv(ENSEMBL_VERSION = 105)
 Sys.setenv(ANNOTATION_HUB_CACHE = "./.cache")
 
 tar_option_set(packages = c(
@@ -38,10 +40,11 @@ tar_option_set(packages = c(
 debug="dge_report"
 )
 
+
 list(
   tar_target( ## UG
     use_ensembl,
-    105
+    Sys.getenv(ENSEMBL_VERSION)
   ),
 
 	# Differential Expression Analysis ----
@@ -65,7 +68,7 @@ list(
 	),
 	tar_target(
 		txdb,
-		get_enseml_txdb_annohub(organism_name, use_ensembl), ##105)
+		get_enseml_txdb_annohub(organism_name, use_ensembl)
 	),
 	tar_target(
 		tx2gene,
