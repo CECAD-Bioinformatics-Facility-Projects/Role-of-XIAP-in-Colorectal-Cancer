@@ -1,12 +1,9 @@
 library(targets)
-##library(tarchetypes)
 source("R/functions.R")
 
 source("R/functional_enrichment.R")
 options(tidyverse.quiet = TRUE)
 
-Sys.setenv(ENSEMBL_VERSION = 105)
-Sys.setenv(ANNOTATION_HUB_CACHE = "./.cache")
 
 tar_option_set(packages = c(
 	"dplyr",
@@ -42,9 +39,9 @@ debug="dge_report"
 
 
 list(
-  tar_target( ## UG
+  tar_target( ## <<<------ SET ENSEMBL VERSION TO BE USED
     use_ensembl,
-    Sys.getenv(ENSEMBL_VERSION)
+    105
   ),
 
 	# Differential Expression Analysis ----
