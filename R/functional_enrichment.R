@@ -3,7 +3,7 @@ get_orgDb <- function(organism_name,
                       ) {
 	orgDb <- function() {
 		##AH <- AnnotationHub::AnnotationHub(cache = use_cache)
-		AH <- AnnotationHub::AnnotationHub() ## UG Aug 24, 2026
+		AH <- AnnotationHub::AnnotationHub(cache = Sys.getenv("ANNOTATION_HUB_CACHE")) ## UG Aug 24, 2026
 
 		OrgDB <- AnnotationHub::query(
 			AH, pattern = c(organism_name, "OrgDB")
