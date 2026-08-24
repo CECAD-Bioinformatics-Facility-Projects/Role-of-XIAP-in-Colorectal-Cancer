@@ -20,6 +20,7 @@ renv/staging/
 .DS_Store
 *.rds
 *.RDS
+out/*
 _targets103*
 _targets105*
 out_Ensembl103
