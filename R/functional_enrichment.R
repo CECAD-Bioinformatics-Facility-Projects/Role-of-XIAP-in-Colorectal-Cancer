@@ -2,7 +2,9 @@ get_orgDb <- function(organism_name,
                       use_cache="/home/rstudio/project/.cache/AnnotationHub" ## UG added Aug 21, 2026
                       ) {
 	orgDb <- function() {
-		AH <- AnnotationHub::AnnotationHub(cache = use_cache)
+		##AH <- AnnotationHub::AnnotationHub(cache = use_cache)
+		AH <- AnnotationHub::AnnotationHub() ## UG Aug 24, 2026
+
 		OrgDB <- AnnotationHub::query(
 			AH, pattern = c(organism_name, "OrgDB")
 		)[[1]]
