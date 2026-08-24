@@ -6,6 +6,8 @@ options(tidyverse.quiet = TRUE)
 
 if(!dir.exists("out")) dir.create("out")
 
+Sys.setenv(ANNOTATION_HUB_CACHE = "~/.cache")
+
 tar_option_set(packages = c(
 	"dplyr",
 	"tibble",
