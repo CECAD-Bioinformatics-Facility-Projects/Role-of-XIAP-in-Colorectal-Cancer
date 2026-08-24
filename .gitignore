@@ -20,4 +20,9 @@ renv/staging/
 .DS_Store
 *.rds
 *.RDS
-
+_targets103*
+_targets105*
+out_Ensembl103
+out_Ensembl105
+.cache/*
+#.gitignore
