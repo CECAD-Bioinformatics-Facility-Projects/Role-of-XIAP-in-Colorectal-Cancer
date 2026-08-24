@@ -1,9 +1,10 @@
 file_substitute <-
   function(infile, outfile,
            in_pattern = "_____ENSVERSION_____",
-           out_pattern = "") {
+           out_pattern = ""
+           ) {
 
-    sub(in_pattern, out_pattern, readLines(infile)) |> writeLines(con=outfile)
+    gsub(in_pattern, out_pattern, readLines(infile)) |> writeLines(con=outfile)
   }
 
 setEnsVersion <-
@@ -84,8 +85,10 @@ basic_DT_format <- function(data){
 #'
 get_enseml_txdb_annohub <- function(species, ensembl_version) {
 	txdb <- function() {
+
+	  AH <- AnnotationHub::AnnotationHub(cache = Sys.getenv("ANNOTATION_HUB_CACHE"))
 		##AH <- AnnotationHub::AnnotationHub(cache = "~/.cache/AnnotationHub")
-		AH <- AnnotationHub::AnnotationHub()
+		##AH <- AnnotationHub::AnnotationHub()
 
 		AnnotationHub::query(
 			AH, pattern = c(species, "EnsDb", ensembl_version)
