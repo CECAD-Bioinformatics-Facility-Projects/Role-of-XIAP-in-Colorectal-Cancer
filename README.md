@@ -89,15 +89,16 @@ source("scripts/reproduce_figures103.R")
 ```
 This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder. This script reads its input from the targets store `my_targets` (by changing the `use_store` argument, it can be set to use any other targets store). 
 
-This script produces Figures 3A, 3B, and S3 of the submitted paper. The script returns them invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
+This script produces Figures 3A, 3B, and S3A of the submitted paper. The script returns them invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
 
 Entering in the R console
 
 - `gene_set_volcano` prints **the Gene Ontology (GO) term volcano plot of Figure 3A**
-- `GSEA_plot` prints `the GSEA plot of Figure 3A` 
 - `gene_volcano` is an R list with two entries:
-    - `gene_volcano$min_cov` prints the `gene volcano plot of Figure S2` (considering only genes with at least 10 counts in at least 6 samples)
+    - `gene_volcano$min_cov` prints the **gene volcano plot of Figure 3B** (considering only genes with at least 10 counts in at least 6 samples)
     - `gene_volcano$all` prints a gene volcano plot of all genes
+- `GSEA_plot` prints **the GSEA plot of Figure S3A** 
+
 
 All Figures refer to the comparison of the KI genotype versus WT.
 
