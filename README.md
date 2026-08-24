@@ -85,7 +85,7 @@ setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
 source("scripts/reproduce_figures103.R")
 
 ```
-This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder, which reads its input from the targets store `my_targets` (by changing the `use_store` argument, it can be set to use any other targets store). 
+This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder. This script reads its input from the targets store `my_targets` (by changing the `use_store` argument, it can be set to use any other targets store). 
 
 This script produces Figures ... . They are stored as variables in the environment.
 
