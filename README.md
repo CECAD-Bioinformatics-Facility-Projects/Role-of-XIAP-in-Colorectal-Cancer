@@ -95,7 +95,8 @@ Entering in the R console
 
 - `gene_set_volcano` prints **the Gene Ontology (GO) term volcano plot of Figure 3A**
 - `gene_volcano` is an R list with two entries:
-    - `gene_volcano$min_cov` prints the **gene volcano plot of Figure 3B** (considering only genes with at least 10 counts in at least 6 samples)
+    - `gene_volcano$min_cov` prints the **gene volcano plot of Figure 3B**                  
+      (considering only genes with at least 10 counts in at least 6 samples)
     - `gene_volcano$all` prints a gene volcano plot of all genes
 - `GSEA_plot` prints **the GSEA plot of Figure S3A** 
 
