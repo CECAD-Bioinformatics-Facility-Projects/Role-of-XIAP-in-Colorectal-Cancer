@@ -107,7 +107,8 @@ Entering in the R console
 
 - `gene_set_volcano` prints **Figure 3A** (the Gene Ontology (GO) term volcano plot)
 
-- `gene_volcano` is an R list with two entries:
+- [`gene_volcano` is an R list with two entries]
+
     - `gene_volcano$min_cov` prints **Figure 3B** (the gene volcano plot)                  
       (considering only genes with at least 10 counts in at least 6 samples)
       
