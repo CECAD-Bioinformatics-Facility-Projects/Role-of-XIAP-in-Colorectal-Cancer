@@ -89,9 +89,9 @@ This code first writes and then executes a script `reproduce_figures103.R` in th
 
 This script produces Figures ... . They are stored as variables in the environment.
 
-Typing
+Entering in the R console
 
-- `GSEA_plot` prints a GSEA plot
+- `GSEA_plot` prints a GSEA plot in the Plots pane
 - `gene_set_volcano` prints a volcano plot of the relative enrichment or depletion of individual Gene Ontology terms 
 - `gene_volcano` is an R list with two entries:
     - `gene_volcano$all` prints a volcano plot of all genes
