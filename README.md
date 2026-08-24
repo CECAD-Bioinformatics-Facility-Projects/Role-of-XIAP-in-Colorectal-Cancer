@@ -34,7 +34,7 @@ renv::restore(clean=TRUE)
 ```
 and re-start R. (Ignore warnings about the renv version.)
 
-To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock accordingly.
+To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock` accordingly.
 
 ### The Targets Pipeline
 
