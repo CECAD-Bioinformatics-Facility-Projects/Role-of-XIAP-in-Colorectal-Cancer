@@ -21,18 +21,18 @@ The initial analysis runs a [targets pipeline](https://books.ropensci.org/target
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
 
 **This project comes with the `TARGETS` environment pre-installed.** To switch to the `FIGURES` 
-environment, enter on a linux-type command line:
+environment, enter in the rstudio terminal (or on any linux-type command line):
 
 ```
 cp -a renv.lock_FOR_FIGURES renv.lock
 ```
 
-then restart R and enter in the R console:
+then enter in the R console:
 
 ```{r switch_environment}
 renv::restore(clean=TRUE)
 ```
-and re-start R again. (Ignore the warning about the renv version.)
+and re-start R. (Ignore warnings about the renv version.)
 
 To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock accordingly.
 
