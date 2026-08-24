@@ -121,12 +121,21 @@ Save the variables before you run the script again, to prevent over-writing:
 
 ```{r save_figures103}
 GSEA_plot103 <- GSEA_plot
+saveRDS(GSEA_plot103, file="GSEA_plot103.rds")
+
 gene_set_volcano103 <- gene_set_volcano
+saveRDS(gene_set_volcano103, file="gene_set_volcano103.rds")
+
 gene_volcano103 <- gene_volcano
+saveRDS(gene_volcano103, file="gene_volcano103.rds")
+```
+
+To re-create e.g. variable GSEA_plot103 in a later session, use
+```{r extract_example}
+GSEA_plot103 <- readRDS("GSEA_plot103.rds")
 ```
 
 To produce the same figures with output of the pipeline using v105, run
-
 
 ```{r figures105}
 library(targets)
@@ -148,5 +157,19 @@ gene_set_volcano105 <- gene_set_volcano
 gene_volcano105 <- gene_volcano
 ```
 
-The differences betwenn the results from the two Ensembl versions are minor.
+Save the variables before you run the script again, to prevent over-writing:
+
+```{r save_figures103}
+GSEA_plot105 <- GSEA_plot
+saveRDS(GSEA_plot105, file="GSEA_plot105.rds")
+
+gene_set_volcano105 <- gene_set_volcano
+saveRDS(gene_set_volcano105, file="gene_set_volcano105.rds")
+
+gene_volcano105 <- gene_volcano
+saveRDS(gene_volcano105, file="gene_volcano105.rds")
+```
+
+
+The differences between the results from the two Ensembl versions are minor.
 
