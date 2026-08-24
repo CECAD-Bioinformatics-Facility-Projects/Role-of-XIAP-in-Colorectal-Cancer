@@ -130,5 +130,5 @@ gene_set_volcano105 <- gene_set_volcano
 gene_volcano105 <- gene_volcano
 ```
 
-The differences betwenn the results from the two versions are minor.
+The differences betwenn the results from the two Ensembl versions are minor.
 
