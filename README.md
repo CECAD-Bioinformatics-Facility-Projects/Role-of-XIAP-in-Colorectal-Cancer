@@ -92,10 +92,12 @@ This script produces Figures ... . They are stored as variables in the environme
 Typing
 
 - `GSEA_plot` prints a GSEA plot
-- `gene_set_volcano` prints a volcano plot of the relative enrichment or depletion of individual Gene Ontology terms in KI vs WT
+- `gene_set_volcano` prints a volcano plot of the relative enrichment or depletion of individual Gene Ontology terms 
 - `gene_volcano` is an R list with two entries:
-    `gene_volcano$all` prints a volcano plot of all genes
-    `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
+    - `gene_volcano$all` prints a volcano plot of all genes
+    - `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
+
+All Figures refer to the comparison of the KI genotype versus WT.
 
 Save the variables before you run the script again, to prevent over-writing:
 
