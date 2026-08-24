@@ -18,7 +18,10 @@ This repository has to deal with a partial R environment incompatibility between
 
 The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
-Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. To activate the `FIGURES` environment, enter on a linux-type command line:
+Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
+
+**This project comes with the `TARGETS` environment pre-installed.** To switch to the `FIGURES` 
+environment, enter on a linux-type command line:
 
 ```
 cp -a renv.lock_FOR_FIGURES renv.lock
@@ -31,7 +34,7 @@ renv::restore(clean=TRUE)
 ```
 and re-start R again. (Ignore the warning about the renv version.)
 
-To switch to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock accordingly.
+To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock accordingly.
 
 ### The Targets Pipeline
 
@@ -40,20 +43,16 @@ After activating the `TARGETS` environment, run
 library(targets)
 set.seed(6733)
 
-tar_make(script="scripts/targets.R", store=[MY_STORE])
+tar_make(script="scripts/targets.R", store="my_targets")
 ```
 
-where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm.
+Folder `my_targets` is where the pipeline output goes. The folder name can be freely choosen. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
 
-**Running the pipeline is only necessary if you want to verify the output**. 
+> In the initial analysis of this data, the pipeline had accidentally been run against the `[Ensembl](https://www.ensembl.org/) version 103` mouse transcript annotation, while the reads had actually been mapped against the version 105 genome build.  The `targets.R` script reproduces this initial run. 
 
-If you are only interested in **using the** output, we offer two pre-filled target stores: `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. 
+To re-run the pipeline with `Ensembl version 105`, run
 
-The separate folders allow to judge the input of the version difference (which is minor).  
-
-<ins>**NOTE**</ins>  The `_targets.R` script uses Ensembl version 103 by default, because this was the initial version. To re-run the pipeline with v105, run
-
-```{r switch_environment}
+```{r run_targets105}
 library(targets)
 source("R/functions.R")
 
@@ -65,18 +64,30 @@ tar_make(script="scripts/_targets105.R",
          store="my_targets105")
 
 ```
+This code creates a script `_targets105.R` and runs it, with the output sent to store "my_targets105".
+
 
 ### The Figures Code
 
-After switching to the FIGURES environment (see above), run
+First switch to the FIGURES environment as described above.
 
-```{r draw_figures}
-source("scripts/reproduce_figures.R")
+Assume that you had stored the output of the v103 pipeline in folder "my_targets". To create the figures with this version, run
+
+```{r figures103}
+library(targets)
+source("R/functions.R")
+
+set.seed(6733)
+
+setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
+                outfile = "scripts/reproduce_figures103.R",
+                use_store = "my_targets")
+source("scripts/reproduce_figures103.R")
+
 ```
+This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder, which reads its input from the targets store `my_targets` (by changing the `use_store` argument, it can be set to use any other targets store). 
 
-The script will by default read the `precomputed_targets103` folder. It uses the GSEA and differential gene expression results stored from the  targets pipeline to visualize enriched Gene Ontology terms and differentially expressed genes in the KI versus the WT genotype. 
-
-Figures are stored as variables in the environment. 
+This script produces Figures ... . They are stored as variables in the environment.
 
 Typing
 
@@ -88,15 +99,16 @@ Typing
 
 Save the variables before you run the script again, to prevent over-writing:
 
-```{r save var}
+```{r save_figures103}
 GSEA_plot103 <- GSEA_plot
 gene_set_volcano103 <- gene_set_volcano
 gene_volcano103 <- gene_volcano
 ```
 
-<ins>**NOTE**</ins> To produce the same figures with output of the pipeline using v105, run
+To produce the same figures with output of the pipeline using v105, run
 
-```{r switch_environment}
+
+```{r figures105}
 library(targets)
 source("R/functions.R")
 
@@ -104,13 +116,17 @@ set.seed(6733)
 
 setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
                 outfile = "scripts/reproduce_figures105.R",
-                use_store = "precomputed105")
+                use_store = "my_targets105")
 source("scripts/reproduce_figures105.R")
 
 ```
-This will produces the same variables as above, but now based on the Ensembl v105 targets.
+This will produces the same variables as above, but now based on the Ensembl v105 targets. Save them from over-writing:
 
+```{r save_figures105}
+GSEA_plot105 <- GSEA_plot
+gene_set_volcano105 <- gene_set_volcano
+gene_volcano105 <- gene_volcano
+```
 
+The differences betwenn the results from the two versions are minor.
 
-[//]: # ## Version control
-[//]: # Git and GitHub are configured automatically by this setup script.
