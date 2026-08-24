@@ -53,7 +53,7 @@ library(targets)
 set.seed(6733)
 
 setEnsVersion(infile =  "scripts/_targets_template.R",
-              outfile = "scripts/_targets105.R",
+              outfile = "scripts/_targets103.R",
               version = "103")
 tar_make(script="scripts/_targets103.R", 
          store="my_targets103")
