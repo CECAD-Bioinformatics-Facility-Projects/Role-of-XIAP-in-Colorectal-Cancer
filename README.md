@@ -175,7 +175,7 @@ saveRDS(gene_volcano105, file="gene_volcano105.rds")
 
 To read a stored variable back from disk, e.g. GSEA_plot103, use
 
-``{r reread}
+```{r reread}
 GSEA_plot103 <- readRDS("GSEA_plot103.rds")
 ```
 
