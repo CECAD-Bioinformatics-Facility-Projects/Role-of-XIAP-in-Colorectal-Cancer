@@ -1,3 +1,24 @@
+file_substitute <-
+  function(infile, outfile,
+           in_pattern = "_____ENSVERSION_____",
+           out_pattern = "") {
+
+    sub(in_pattern, out_pattern, readLines(infile)) |> writeLines(con=outfile)
+  }
+
+setEnsVersion <-
+  function(infile,outfile,version) {
+    file_substitute(infile=infile,outfile=outfile,
+                    in_pattern="_____ENSVERSION_____",out_pattern=version)
+  }
+setTargetsStore <-
+  function(infile,outfile,use_store) {
+    file_substitute(infile=infile,outfile=outfile,
+                    in_pattern="_____USESTORE_____",out_pattern=use_store)
+  }
+
+
+
 #' make_DESeq_sample_table
 #'
 #' @param files_tab
@@ -28,7 +49,7 @@ make_DESeq_sample_table <- function(
 
 
 #' basic_DT_format
-#' 
+#'
 #' @param data
 basic_DT_format <- function(data){
 	DT::datatable(
@@ -57,13 +78,15 @@ basic_DT_format <- function(data){
 
 
 #' get_enseml_txdb_annohub
-#' 
+#'
 #' @param species Scientific name of a species
 #' @param ensembl_version the version of ensemble to use
-#' 
+#'
 get_enseml_txdb_annohub <- function(species, ensembl_version) {
 	txdb <- function() {
-		AH <- AnnotationHub::AnnotationHub(cache = "~/.cache/AnnotationHub")
+		##AH <- AnnotationHub::AnnotationHub(cache = "~/.cache/AnnotationHub")
+		AH <- AnnotationHub::AnnotationHub()
+
 		AnnotationHub::query(
 			AH, pattern = c(species, "EnsDb", ensembl_version)
 		)[[1]]
@@ -73,9 +96,9 @@ get_enseml_txdb_annohub <- function(species, ensembl_version) {
 
 
 #' get_tx2gene
-#' 
+#'
 #' @param txdb
-#' 
+#'
 get_tx2gene <- function(txdb, prefix="transcript:") {
         k <- AnnotationDbi::keys(txdb, keytype = "TXNAME")
         tx2gene <- AnnotationDbi::select(
@@ -103,7 +126,7 @@ nf_salmon_quant_files_table <- function(
       paste(rep("(\\w+)", length(variables)), collapse = "_"), "[\\/\\_]"
     )
   }
-  
+
   tibble::tibble(
     file_path = files
   ) %>%
@@ -152,15 +175,15 @@ nf_salmon_quant_files <- function(files_tab) {
 }
 
 #' add_gene_annotation
-#' 
+#'
 #' @param resLFC,
 #' @param txdb
-#' 
+#'
 add_gene_annotation <- function(resLFC, txdb) {
-	res_extra <- resLFC %>% 
-		as.data.frame() %>% 
+	res_extra <- resLFC %>%
+		as.data.frame() %>%
 		tibble::rownames_to_column(var = "gene_id") %>%
-		arrange(pvalue) %>% 
+		arrange(pvalue) %>%
 		left_join(
 			GenomicFeatures::genes(txdb) %>% as_tibble(), by = "gene_id"
 		) %>%
@@ -169,8 +192,8 @@ add_gene_annotation <- function(resLFC, txdb) {
 }
 
 format_results <- function(res_extra, organism_name) {
-	#res_extra_text_nona <- 
-	res_extra %>% 
+	#res_extra_text_nona <-
+	res_extra %>%
 		dplyr::mutate(
 			`-log10(p-value)` = -log10(pvalue),
 			#abslfc = abs(log2FoldChange),
@@ -225,7 +248,7 @@ plotly_volcano <- function(data) {
 
 lfcpal <- function(x) {
 	if(min(x)==max(x)) return(NULL) ## UG
-	
+
 	pal <- colourScaleR::universal_colour_scaler(
 		x, #log2FoldChange,
 		type = "scico", palette = "romaO",
@@ -236,7 +259,7 @@ lfcpal <- function(x) {
 
 pvalpal <- function(x) {
 	if(min(x)==max(x)) return(NULL) ## UG
-	
+
 	# pal <- colourScaleR::universal_colour_scaler(
 	# 	x, #pvalue.
 	# 	type = "scico", palette = "romaO",
@@ -280,7 +303,7 @@ results_table_DT <- function(data) {
 						#targets = c(7,8,9,10,13,15,16,17,18)
 						targets = c(1, c(7,8,9,10,13,15,16,17,18) + 1)
 					)
-				), 
+				),
 				searchCols = c(
 					vector(mode = "list", length = 6),
 					list(list(search = '0.000 ... 0.050')),
@@ -332,25 +355,25 @@ txi_sub <- function(txi, col = NULL, row = NULL) {
 # Excel outputs ----
 
 #' results_xlsx
-#' 
-#' 
+#'
+#'
 #' @param results_annotated annotated deseq2 results table
 #' @param name name of the sheet
 #' @param file output file
 results_xlsx <- function(results_annotated, name, file) {
-	
+
 	name <- stringr::str_trunc(name, 31)
-	
+
 	wb <- openxlsx::createWorkbook()
 	hs <- openxlsx::createStyle(textDecoration = "bold")
-	
+
 	openxlsx::addWorksheet(wb, sheetName = name)
 	openxlsx::writeDataTable(wb, name, results_annotated, headerStyle = hs)
 	openxlsx::setColWidths(
 		wb, name, cols = 1:ncol(results_annotated), widths = "auto"
 	)
 	openxlsx::freezePane(wb, name, firstRow = TRUE)
-	
+
 	fs::dir_create(fs::path_dir(file))
 	openxlsx::saveWorkbook(wb, file, overwrite = TRUE)
 	file
@@ -365,20 +388,20 @@ min_coverage <- function(
 }
 
 #' get_res_annot_wide
-#' 
-#' 
+#'
+#'
 #' @param res_annot_grp
-#' 
-#' 
+#'
+#'
 get_res_annot_wide <- function(res_annot_grp) {
-	res_annot_lst <- 
+	res_annot_lst <-
 	res_annot_grp %>%
-		dplyr::select(gene_id, log2FoldChange, pvalue, comparison) %>% 
-		dplyr::group_by(comparison) %>% 
+		dplyr::select(gene_id, log2FoldChange, pvalue, comparison) %>%
+		dplyr::group_by(comparison) %>%
 		dplyr::group_split()
-	
+
 	names(res_annot_lst) <- purrr::map_chr(res_annot_lst, ~.x$comparison[1])
-	
+
 	res_annot_lst <- purrr::map(names(res_annot_lst), ~{
 		nm <- .x
 		res_annot_lst[[nm]] %>%
@@ -390,29 +413,29 @@ get_res_annot_wide <- function(res_annot_grp) {
 
 
 #' res_annot_wide_counts_xl
-#' 
+#'
 #' @param res_annot_wide_counts
 #' @param name
 #' @param file
-#' 
+#'
 res_annot_wide_counts_xl <- function(res_annot_wide_counts, name, file) {
 	wb <- openxlsx::createWorkbook()
 	hs <- openxlsx::createStyle(textDecoration = "bold")
-	
+
 	openxlsx::addWorksheet(wb, sheetName = name)
 	openxlsx::writeDataTable(wb, name, res_annot_wide_counts, headerStyle = hs)
 	openxlsx::setColWidths(
 		wb, name, cols = 1:ncol(res_annot_wide_counts), widths = "auto"
 	)
 	openxlsx::freezePane(wb, name, firstRow = TRUE)
-	
+
 	clnms <- colnames(res_annot_wide_counts)
 	lfc_cols <- which(grepl("_log2FoldChange", clnms))
-	
+
 	pcol <- which(grepl("_pvalue", clnms))
-	
+
 	symcol <- which(grepl("SYMBOL", clnms))
-	
+
 	for (i in lfc_cols) {
 		openxlsx::conditionalFormatting(
 			wb, name,
@@ -422,7 +445,7 @@ res_annot_wide_counts_xl <- function(res_annot_wide_counts, name, file) {
 			rows = 2:(nrow(res_annot_wide_counts) + 1)
 		)
 	}
-	
+
 	for (i in pcol) {
 		openxlsx::conditionalFormatting(
 			wb, name,
@@ -443,17 +466,17 @@ res_annot_wide_counts_xl <- function(res_annot_wide_counts, name, file) {
 			# rule = range(-log10(res_annot_wide_counts[,pcol]), na.rm = TRUE)
 		)
 	}
-	
+
 	# all_hm_vals <-
 	# 	res_annot_wide_counts[
 	# 		2:(nrow(res_annot_wide_counts)) + 1,
 	# 		(symcol + 1) : ncol(res_annot_wide_counts)
 	# 	]
-	# 
+	#
 	# all_hm_vals <- unlist(all_hm_vals)
-	# 
+	#
 	# all_hm_vals <- all_hm_vals[!is.na(all_hm_vals)]
-	
+
 	# hm_col_scale <- colourScaleR::universal_colour_scaler(
 	# 	all_hm_vals,
 	# 	# verbose = TRUE,
@@ -461,9 +484,9 @@ res_annot_wide_counts_xl <- function(res_annot_wide_counts, name, file) {
 	# 	n_breaks = 7,
 	# 	mode = "palette"
 	# )
-	
+
 	# breaks <- as.numeric(names(hm_col_scale))
-	
+
 	openxlsx::conditionalFormatting(
 		wb, name,
 		cols = (symcol + 1) : ncol(res_annot_wide_counts),
@@ -483,7 +506,7 @@ res_annot_wide_counts_xl <- function(res_annot_wide_counts, name, file) {
 			probs = c(0.1, 0.5, 0.99)
 		)
 	)
-	
+
 	fs::dir_create(fs::path_dir(file))
 	openxlsx::saveWorkbook(wb, file, overwrite = TRUE)
 	file
