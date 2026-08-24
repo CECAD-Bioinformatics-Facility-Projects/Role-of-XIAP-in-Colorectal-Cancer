@@ -12,9 +12,11 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 
 ## Repository content
 
+This repository contains the R source code for reproducing Figures 3A, 3B, and S3 of the submitted manuscript.
+
 ### R environments
 
-This repository has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for figures of the submitted paper. 
+The code has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
 
 The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
@@ -91,11 +93,11 @@ This script produces Figures ... . They are stored as variables in the environme
 
 Entering in the R console
 
-- `GSEA_plot` prints a GSEA plot in the Plots pane
-- `gene_set_volcano` prints a volcano plot of the relative enrichment or depletion of individual Gene Ontology terms 
+- `gene_set_volcano` prints `the Gene Ontology (GO) term volcano plot of Figure 3A`
+- `GSEA_plot` prints `the GSEA plot of Fifure 3A` in the Plots pane
 - `gene_volcano` is an R list with two entries:
-    - `gene_volcano$all` prints a volcano plot of all genes
-    - `gene_volcano$min_cov` considers only genes with at least 10 counts in at least 6 samples 
+    - `gene_volcano$min_cov` prints the `gene volcano plot of Figure S2` (considering only genes with at least 10 counts in at least 6 samples)
+    - `gene_volcano$all` prints a gene volcano plot of all genes
 
 All Figures refer to the comparison of the KI genotype versus WT.
 
