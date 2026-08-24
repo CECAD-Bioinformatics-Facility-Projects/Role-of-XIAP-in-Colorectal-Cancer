@@ -6,7 +6,7 @@ options(tidyverse.quiet = TRUE)
 
 if(!dir.exists("out")) dir.create("out")
 
-Sys.setenv(ANNOTATION_HUB_CACHE = "~/.cache")
+Sys.setenv(ANNOTATION_HUB_CACHE = "/home/rstudio/project/.cache")
 
 tar_option_set(packages = c(
 	"dplyr",
@@ -146,7 +146,7 @@ list(
 			vroom::vroom_write(counts, path, delim = "\t")
 			return(path)
 		##})("report/count_matrix_raw.tsv"),
-		})("count_matrix_raw.tsv"), ## UG Aug 20, 2026
+		})("count_matrix_raw______ENSVERSION_____.tsv"), ## UG Aug 24, 2026
 
 		format = "file"
 	),
@@ -157,7 +157,7 @@ list(
 			vroom::vroom_write(vst_counts_anno, path, delim = "\t")
 			return(path)
 		##})("report/count_matrix_vst.tsv"),
-		})("count_matrix_vst.tsv"), ## UG Aug 20, 2026
+		})("count_matrix_vst______ENSVERSION_____.tsv"), ## UG Aug 24, 2026
 		format = "file"
 	),
 	tar_target(
