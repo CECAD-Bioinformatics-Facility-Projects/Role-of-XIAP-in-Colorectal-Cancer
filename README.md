@@ -105,14 +105,15 @@ The script produces Figures 3A, 3B, and S3A of the submitted paper. The script r
 
 Entering in the R console
 
-- `gene_set_volcano` prints **the Gene Ontology (GO) term volcano plot of Figure 3A**
+- `gene_set_volcano` prints **Figure 3A** (the Gene Ontology (GO) term volcano plot)
 
 - `gene_volcano` is an R list with two entries:
-    - `gene_volcano$min_cov` prints the **gene volcano plot of Figure 3B**                  
+    - `gene_volcano$min_cov` prints **Figure 3B** (the gene volcano plot)                  
       (considering only genes with at least 10 counts in at least 6 samples)
       
     - `gene_volcano$all` prints a gene volcano plot of all genes
-- `GSEA_plot` prints **the GSEA plot of Figure S3A** 
+    
+- `GSEA_plot` prints **Figure S3A** (the GSEA plot) 
 
 
 All figures refer to the comparison of the KI genotype versus WT.
