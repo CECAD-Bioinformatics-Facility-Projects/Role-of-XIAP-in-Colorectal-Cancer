@@ -34,7 +34,7 @@ then enter in the R console:
 ```{r switch_environment}
 renv::restore(clean=TRUE)
 ```
-and re-start R. (Ignore warnings about the renv version.)
+and re-start R. Answer "y" to the package update prompt. (Yo can ignore warnings about the renv version.)
 
 To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock` accordingly.
 
@@ -45,7 +45,7 @@ With the `TARGETS` environment activated, run
 library(targets)
 set.seed(6733)
 
-tar_make(script="scripts/targets.R", store="my_targets")
+tar_make(script="scripts/_targets.R", store="my_targets")
 ```
 
 Folder `my_targets` is where the pipeline output goes. The folder name can be freely choosen. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
