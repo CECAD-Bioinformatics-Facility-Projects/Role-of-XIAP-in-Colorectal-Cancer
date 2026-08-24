@@ -119,23 +119,15 @@ Entering in the R console
 
 All figures refer to the comparison of the KI genotype versus WT.
 
-Save the variables before you run the script again, to prevent over-writing:
 
+Save the variables before you run the script again, to prevent over-writing:
 ```{r save_figures103}
 GSEA_plot103 <- GSEA_plot
-saveRDS(GSEA_plot103, file="GSEA_plot103.rds")
-
 gene_set_volcano103 <- gene_set_volcano
-saveRDS(gene_set_volcano103, file="gene_set_volcano103.rds")
-
 gene_volcano103 <- gene_volcano
-saveRDS(gene_volcano103, file="gene_volcano103.rds")
 ```
 
-To re-create e.g. variable GSEA_plot103 in a later session, use
-```{r extract_example}
-GSEA_plot103 <- readRDS("GSEA_plot103.rds")
-```
+
 
 To produce the same figures with output of the pipeline using v105, run
 
@@ -159,19 +151,33 @@ gene_set_volcano105 <- gene_set_volcano
 gene_volcano105 <- gene_volcano
 ```
 
-Save the variables before you run the script again, to prevent over-writing:
+There are no obvious conceptual differences between the results from the two 
+Ensembl versions. However Ensembl 105 can annotate more transcripts (and consequently more 
+genes) than Ensembl 103, and therefore also tends to find more differentially expressed 
+Gene Ontology terms.
+
+### Saving Variables Permanently on Disk
+
+Environment variables are lost on re-starting the R session or quitting R.
+
+They can be saved on disk like so:
 
 ```{r save_figures103}
-GSEA_plot105 <- GSEA_plot
+saveRDS(GSEA_plot103, file="GSEA_plot103.rds")
+saveRDS(gene_set_volcano103, file="gene_set_volcano103.rds")
+saveRDS(gene_volcano103, file="gene_volcano103.rds")
+```
+
+```{r save_figures105}
 saveRDS(GSEA_plot105, file="GSEA_plot105.rds")
-
-gene_set_volcano105 <- gene_set_volcano
 saveRDS(gene_set_volcano105, file="gene_set_volcano105.rds")
-
-gene_volcano105 <- gene_volcano
 saveRDS(gene_volcano105, file="gene_volcano105.rds")
 ```
 
+To read a stored variable back from disk, e.g. GSEA_plot103, use
 
-The differences between the results from the two Ensembl versions are minor.
+``{r reread}
+GSEA_plot103 <- readRDS("GSEA_plot103.rds")
+```
 
+```
