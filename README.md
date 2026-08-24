@@ -44,7 +44,7 @@ There is an additional complexity here:
 
 > In the initial analysis of this data, the pipeline had accidentally been run against the `[Ensembl](https://www.ensembl.org/) version 103` mouse transcript annotation, while the reads had actually been mapped against the version 105 genome build.  The `targets.R` script reproduces this initial run. 
 
-This has but a minor impact on the figures, but we do offer the possibility here to produce both the Ensembl 103 and 105 versions of the figures. 
+This has no strong impact on the figures, but we do offer the possibility here to produce both the Ensembl 103 and 105 versions of the figures. 
 
 With the `TARGETS` environment activated, run
 
@@ -62,7 +62,7 @@ tar_make(script="scripts/_targets103.R",
 
 to produce the Ensembl version 103 pipeline results. 
 
-The code creates a script `_targets103.R` and runs it, with the output sent to store "my_targets103". The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
+The code creates a script `_targets103.R` and runs it, with the output sent to store `my_targets103`. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
 To re-run the pipeline with `Ensembl version 105`, run
