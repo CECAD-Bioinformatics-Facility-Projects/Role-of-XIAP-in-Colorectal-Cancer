@@ -45,7 +45,9 @@ tar_make(script="scripts/targets.R", store=[MY_STORE])
 
 where `[MY_STORE]` is a folder name. This is where the pipeline output goes. The name can be freely choosen, but it is typically `_targets`. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm.
 
-Running the pipeline is only necessary if you want to verify the output. If you are only interested in using the output, we offer two pre-filled target stores: `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. 
+**Running the pipeline is only necessary if you want to verify the output**. 
+
+If you are only interested in **using the** output, we offer two pre-filled target stores: `precomputed_targets103` and `precomputed_targets105`. The numbers refer to versions of the [Ensembl](https://www.ensembl.org/) database. The initial pipeline run had accidentally used the v103 mouse transcript annotation, while the reads had actually been mapped against the v105 genome build. 
 
 The separate folders allow to judge the input of the version difference (which is minor).  
 
@@ -101,8 +103,8 @@ source("R/functions.R")
 set.seed(6733)
 
 setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
-                   outfile = "scripts/reproduce_figures105.R",
-                   use_store = "precomputed105")
+                outfile = "scripts/reproduce_figures105.R",
+                use_store = "precomputed105")
 source("scripts/reproduce_figures105.R")
 
 ```
@@ -110,5 +112,5 @@ This will produces the same variables as above, but now based on the Ensembl v10
 
 
 
-## Version control
-Git and GitHub are configured automatically by this setup script.
+[//]: # ## Version control
+[//]: # Git and GitHub are configured automatically by this setup script.
