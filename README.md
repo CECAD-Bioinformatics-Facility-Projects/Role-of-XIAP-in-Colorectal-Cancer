@@ -99,9 +99,9 @@ setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
 source("scripts/reproduce_figures103.R")
 
 ```
-This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder. This script reads its input from the targets store `my_targets103` (by changing the `use_store` argument, it can be set to use any other targets store). 
+This code first writes and then executes a script `reproduce_figures103.R` (to be found in the `scripts` folder). The script reads its input from the targets store `my_targets103`.
 
-The script produces Figures 3A, 3B, and S3A of the submitted paper. The script returns them invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
+The script produces Figures 3A, 3B, and S3A of the submitted paper. The figures are returned invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
 
 Entering in the R console
 
@@ -126,7 +126,6 @@ GSEA_plot103 <- GSEA_plot
 gene_set_volcano103 <- gene_set_volcano
 gene_volcano103 <- gene_volcano
 ```
-
 
 
 To produce the same figures with output of the pipeline using v105, run
