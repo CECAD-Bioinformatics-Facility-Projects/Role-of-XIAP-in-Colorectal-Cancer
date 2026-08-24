@@ -18,7 +18,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 The code has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
 
-The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
+The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), which produces input objects of the figures code. Both parts are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
 
@@ -34,23 +34,36 @@ then enter in the R console:
 ```{r switch_environment}
 renv::restore(clean=TRUE)
 ```
-and re-start R. Answer "y" to the package update prompt. (Yo can ignore warnings about the renv version.)
+Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) Finally `restart R`.
 
 To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock` accordingly.
 
 ### The Targets Pipeline
 
+There is an additional complexity here:
+
+> In the initial analysis of this data, the pipeline had accidentally been run against the `[Ensembl](https://www.ensembl.org/) version 103` mouse transcript annotation, while the reads had actually been mapped against the version 105 genome build.  The `targets.R` script reproduces this initial run. 
+
+This has but a minor impact on the figures, but we do offer the possibility here to produce both the Ensembl 103 and 105 versions of the figures. 
+
 With the `TARGETS` environment activated, run
+
 ```{r run_targets103}
 library(targets)
 set.seed(6733)
 
-tar_make(script="scripts/_targets.R", store="my_targets")
+setEnsVersion(infile =  "scripts/_targets_template.R",
+              outfile = "scripts/_targets105.R",
+              version = "103")
+tar_make(script="scripts/_targets103.R", 
+         store="my_targets103")
+
 ```
 
-Folder `my_targets` is where the pipeline output goes. The folder name can be freely choosen. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
+to produce the Ensembl version 103 pipeline results. 
 
-> In the initial analysis of this data, the pipeline had accidentally been run against the `[Ensembl](https://www.ensembl.org/) version 103` mouse transcript annotation, while the reads had actually been mapped against the version 105 genome build.  The `targets.R` script reproduces this initial run. 
+The code creates a script `_targets103.R` and runs it, with the output sent to store "my_targets103". The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
+
 
 To re-run the pipeline with `Ensembl version 105`, run
 
@@ -66,14 +79,13 @@ tar_make(script="scripts/_targets105.R",
          store="my_targets105")
 
 ```
-This code creates a script `_targets105.R` and runs it, with the output sent to store "my_targets105".
 
 
 ### The Figures Code
 
 First switch to the FIGURES environment as described above.
 
-Assume that you had stored the output of the v103 pipeline in folder "my_targets". To create the figures with this version, run
+To create the figures with Ensembl version 103, run
 
 ```{r figures103}
 library(targets)
@@ -83,13 +95,13 @@ set.seed(6733)
 
 setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
                 outfile = "scripts/reproduce_figures103.R",
-                use_store = "my_targets")
+                use_store = "my_targets103")
 source("scripts/reproduce_figures103.R")
 
 ```
-This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder. This script reads its input from the targets store `my_targets` (by changing the `use_store` argument, it can be set to use any other targets store). 
+This code first writes and then executes a script `reproduce_figures103.R` in the `scripts` folder. This script reads its input from the targets store `my_targets103` (by changing the `use_store` argument, it can be set to use any other targets store). 
 
-This script produces Figures 3A, 3B, and S3A of the submitted paper. The script returns them invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
+The script produces Figures 3A, 3B, and S3A of the submitted paper. The script returns them invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
 
 Entering in the R console
 
@@ -103,7 +115,7 @@ Entering in the R console
 - `GSEA_plot` prints **the GSEA plot of Figure S3A** 
 
 
-All Figures refer to the comparison of the KI genotype versus WT.
+All figures refer to the comparison of the KI genotype versus WT.
 
 Save the variables before you run the script again, to prevent over-writing:
 
