@@ -12,9 +12,9 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 
 ## Repository content
 
-This repository has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for figures of the submitted paper. In addition, transcripts in the initial analysis had been annotated using Ensembl v103, while the reads had actually been mapped to the v105 mouse genome build. 
-
 ### R environments
+
+This repository has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for figures of the submitted paper. 
 
 The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), the results of which are input to the figure code. Both are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
