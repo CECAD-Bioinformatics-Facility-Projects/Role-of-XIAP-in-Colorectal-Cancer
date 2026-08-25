@@ -4,7 +4,7 @@ library(clusterProfiler)
 library(EnhancedVolcano)
 source("~/project/R/gseaplot2_local.R")
 
-use_store <- "/home/rstudio/project/precomputed105"
+use_store <- "/home/rstudio/project/_targets105"
 
 GO_GSEA <- setNames(tar_read(GO_GSEA, store=use_store),
 		    tar_read(GO_GSEA_names_pairs, store=use_store)
