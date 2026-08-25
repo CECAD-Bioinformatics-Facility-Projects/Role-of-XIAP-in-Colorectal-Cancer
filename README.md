@@ -42,43 +42,15 @@ To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `re
 
 There is an additional complexity here:
 
-> In the initial analysis of this data, the pipeline had accidentally been run against the `[Ensembl](https://www.ensembl.org/) version 103` mouse transcript annotation, while the reads had actually been mapped against the version 105 genome build.  The `targets.R` script reproduces this initial run. 
-
-This has no strong impact on the figures, but we do offer the possibility here to produce both the Ensembl 103 and 105 versions of the figures. 
-
 With the `TARGETS` environment activated, run
 
 ```{r run_targets103}
 library(targets)
 set.seed(6733)
 
-setEnsVersion(infile =  "scripts/_targets_template.R",
-              outfile = "scripts/_targets103.R",
-              version = "103")
-tar_make(script="scripts/_targets103.R", 
-         store="my_targets103")
-
+tar_make(script="scripts/_targets.R")
 ```
-
-to produce the Ensembl version 103 pipeline results. 
-
-The code creates a script `_targets103.R` and runs it, with the output sent to store `my_targets103`. The seed assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
-
-
-To re-run the pipeline with `Ensembl version 105`, run
-
-```{r run_targets105}
-library(targets)
-source("R/functions.R")
-
-set.seed(6733)
-setEnsVersion(infile =  "scripts/_targets_template.R",
-              outfile = "scripts/_targets105.R",
-              version = "105")
-tar_make(script="scripts/_targets105.R", 
-         store="my_targets105")
-
-```
+to produce the pipeline results in a folder named "_targets".  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
 ### The Figures Code
@@ -93,67 +65,23 @@ source("R/functions.R")
 
 set.seed(6733)
 
-setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
-                outfile = "scripts/reproduce_figures103.R",
-                use_store = "my_targets103")
-source("scripts/reproduce_figures103.R")
+source("scripts/reproduce_figures.R")
 
 ```
-This code first writes and then executes a script `scripts/reproduce_figures103.R`. This script reads its input from the targets store `my_targets103` and produces Figures 3A, 3B, and S3A of the submitted paper. 
+This script reads its input from "_targets" and produces Figures 3A, 3B, and S3A of the submitted paper. 
 
-The figures are returned invisibly, as variables in the environment. They are printed in the Plots pane by typing their name:
-
-Entering in the R console
+The figures are returned invisibly, as variables in the environment. They are printed in the Plots pane by typing their name at the console prompt:
 
 - `gene_set_volcano` prints **Figure 3A** (the Gene Ontology (GO) term volcano plot)
 
-- [`gene_volcano` is an R list with two entries]
-
-    - `gene_volcano$min_cov` prints **Figure 3B** (the gene volcano plot)                  
-      (considering only genes with at least 10 counts in at least 6 samples)
+- `gene_volcano$min_cov` prints **Figure 3B** (the gene volcano plot, considering only genes with at least 10 counts in at least 6 samples)
       
-    - `gene_volcano$all` prints a gene volcano plot of all genes
+- `gene_volcano$all` prints a gene volcano plot of all genes
     
 - `GSEA_plot` prints **Figure S3A** (the GSEA plot) 
 
 
 All figures refer to the comparison of the KI genotype versus WT.
-
-
-Save the variables before you run the script again, to prevent over-writing:
-```{r save_figures103}
-GSEA_plot103 <- GSEA_plot
-gene_set_volcano103 <- gene_set_volcano
-gene_volcano103 <- gene_volcano
-```
-
-
-To produce the same figures with output of the pipeline using v105, run
-
-```{r figures105}
-library(targets)
-source("R/functions.R")
-
-set.seed(6733)
-
-setTargetsStore(infile =  "scripts/reproduce_figures_template.R",
-                outfile = "scripts/reproduce_figures105.R",
-                use_store = "my_targets105")
-source("scripts/reproduce_figures105.R")
-
-```
-This will produces the same variables as above, but now based on the Ensembl v105 targets. Save them from over-writing:
-
-```{r save_figures105}
-GSEA_plot105 <- GSEA_plot
-gene_set_volcano105 <- gene_set_volcano
-gene_volcano105 <- gene_volcano
-```
-
-There are no obvious conceptual differences between the results from the two 
-Ensembl versions. However Ensembl 105 can annotate more transcripts (and consequently more 
-genes) than Ensembl 103, and therefore also tends to find more differentially expressed 
-Gene Ontology terms.
 
 ### Saving Variables Permanently on Disk
 
@@ -161,22 +89,16 @@ Environment variables are lost on re-starting the R session or quitting R.
 
 They can be saved on disk like so:
 
-```{r save_figures103}
-saveRDS(GSEA_plot103, file="GSEA_plot103.rds")
-saveRDS(gene_set_volcano103, file="gene_set_volcano103.rds")
-saveRDS(gene_volcano103, file="gene_volcano103.rds")
+```{r save_figures}
+saveRDS(GSEA_plot, file="GSEA_plot.rds")
+saveRDS(gene_set_volcano, file="gene_set_volcano.rds")
+saveRDS(gene_volcano, file="gene_volcano.rds")
 ```
 
-```{r save_figures105}
-saveRDS(GSEA_plot105, file="GSEA_plot105.rds")
-saveRDS(gene_set_volcano105, file="gene_set_volcano105.rds")
-saveRDS(gene_volcano105, file="gene_volcano105.rds")
-```
+To read a stored variable back from disk, for example GSEA_plot, use
 
-To read a stored variable back from disk, e.g. GSEA_plot103, use
-
-```{r reread}
-GSEA_plot103 <- readRDS("GSEA_plot103.rds")
+```{r read_back}
+GSEA_plot <- readRDS("GSEA_plot103")
 ```
 
 
