@@ -17,4 +17,5 @@ renv/activate.R
 *.rds
 *.RDS
 .cache/
+_targets/
 
