@@ -25,7 +25,6 @@ Here we use a manual workaround. We provide two separate renv.lock files, descri
 ### The Targets Pipeline
 
 To activate the `TARGETS` environment, enter in the R console:
-
 ```{r restore_targets}
 
 renv::restore(lockfile = renv.lock_FOR_TARGETS, clean=TRUE)
@@ -33,7 +32,6 @@ renv::restore(lockfile = renv.lock_FOR_TARGETS, clean=TRUE)
 Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) 
 
 Finally `restart R` and enter in the console
-
 ```{r activate_targets}
 renv::activate()
 ```
@@ -42,7 +40,6 @@ renv::activate()
 
 
 With the `TARGETS` environment activated, run
-
 ```{r run_targets105}
 library(targets)
 set.seed(6733)
@@ -64,7 +61,6 @@ source("R/functions.R")
 set.seed(6733)
 
 source("scripts/reproduce_figures.R")
-
 ```
 This script reads its input from "_targets105" and produces Figures 3A, 3B, and S3A of the submitted paper. 
 
