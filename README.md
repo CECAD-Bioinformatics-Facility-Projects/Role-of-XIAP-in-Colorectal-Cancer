@@ -18,7 +18,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 The code has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
 
-The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), which produces input objects of the figures code. Both parts are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
+The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), which produces the input objects for the figures code. Both parts are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
 
@@ -26,11 +26,11 @@ Here we use a manual workaround. We provide two separate renv.lock files, descri
 
 To activate the `TARGETS` environment, enter in the R console:
 ```{r restore_targets}
-renv::restore(lockfile = renv.lock_FOR_TARGETS, clean=TRUE)
+renv::restore(lockfile = "renv.lock_FOR_TARGETS", clean=TRUE)
 ```
-Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) 
+Answer "y" to the package update prompt. (You can ignore warnings about the renv version -- the next steps will take care of this.) 
 
-Finally `restart R` and enter in the console
+Finally `restart R`,  and then enter in the console
 ```{r activate_targets}
 renv::activate()
 ```
@@ -39,19 +39,19 @@ renv::activate()
 
 
 With the `TARGETS` environment activated, run
-```{r run_targets105}
+```{r run_targets}
 library(targets)
 set.seed(6733)
 
-tar_make(script="scripts/_targets105.R")
+tar_make(script="scripts/_targets.R")
 ```
-to produce the pipeline results in a folder named "_targets105", using Ensembl version 105.  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
+to produce the pipeline results in a folder named "_targets", using Ensembl version 105.  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
 ### The Figures Code
 To switch to the `FIGURES` environment, run the same code as described above for TARGETS, but with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.
 
-To create the figures with Ensembl version 105, run
+To create the figures (using Ensembl version 105), run
 
 ```{r figures105}
 library(targets)
@@ -61,7 +61,7 @@ set.seed(6733)
 
 source("scripts/reproduce_figures.R")
 ```
-This script reads its input from "_targets105" and produces Figures 3A, 3B, and S3A of the submitted paper. 
+This script reads its input from "_targets" and produces Figures 3A, 3B, and S3A of the submitted paper. 
 
 The figures are returned invisibly, as variables in the environment. They are printed in the Plots pane by typing their name at the console prompt:
 
@@ -88,10 +88,10 @@ saveRDS(gene_set_volcano, file="gene_set_volcano.rds")
 saveRDS(gene_volcano, file="gene_volcano.rds")
 ```
 
-To read a stored variable back from disk, for example GSEA_plot, use
+To read a stored variable back from disk, for example `GSEA_plot`, use
 
 ```{r read_back}
-GSEA_plot <- readRDS("GSEA_plot103")
+GSEA_plot <- readRDS("GSEA_plot105")
 ```
 
 
