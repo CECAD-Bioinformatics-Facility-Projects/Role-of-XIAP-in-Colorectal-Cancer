@@ -4,7 +4,11 @@ library(clusterProfiler)
 library(EnhancedVolcano)
 source("~/project/R/gseaplot2_local.R")
 
-use_store <- "/home/rstudio/project/_targets105"
+use_store <- "/home/rstudio/project/_targets" ##105"
+
+## read the GO terms of interest [requested by Hamid Kashkar]:
+source("requested_terms.R")
+
 
 GO_GSEA <- setNames(tar_read(GO_GSEA, store=use_store),
 		    tar_read(GO_GSEA_names_pairs, store=use_store)
@@ -16,28 +20,11 @@ use_gg <- gg
 
 ## ---------------- Constructing the GSEA plot: ---------------------------------------
 ## old definition
-## top_terms <- gg$Description[1:7] ## these terms share the same maximal p.adjust
-
-top_terms <- gg$Description[gg$p.adjust == min(gg$p.adjust)]
-
-## Request by Hamid Kashkar:
-requested_terms <- c(setdiff(top_terms, "ribonucleoprotein complex biogenesis"), ## do not consider this top term
-                     gg$Description[gg$Description %in% c("cell killing", ## add these terms, although not among the maximal terms
-                                                          "innate immune response in mucosa")
-                                   ]
-                    )
-# > requested_terms
-# [1] "response to molecule of bacterial origin"
-# [2] "humoral immune response"
-# [3] "antimicrobial humoral response"
-# [4] "response to lipopolysaccharide"
-# [5] "antimicrobial humoral immune response mediated by antimicrobial peptide"
-# [6] "cellular response to biotic stimulus"
-# [7] "innate immune response in mucosa"
-# [8] "cell killing"
+## top_terms <- gg$Description[gg$p.adjust == min(gg$p.adjust)]
 
 ## Define the term order such that the requested terms appear to top:
-use_levels <- c(gg$Description[ i <- which(gg$Description %in% requested_terms)],
+use_levels <-
+  c(gg$Description[ i <- which(gg$Description %in% requested_terms)],
 		gg$Description[-i])
 
 use_gg@result$Description <- factor(use_gg@result$Description, levels=use_levels)
