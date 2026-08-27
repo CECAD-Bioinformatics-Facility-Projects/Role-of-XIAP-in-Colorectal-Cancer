@@ -30,7 +30,9 @@ renv::restore(lockfile = "renv.lock_FOR_TARGETS", clean=TRUE)
 ```
 Answer "y" to the package update prompt. (You can ignore warnings about the renv version -- the next steps will take care of this.) 
 
-Finally `restart R`,  and then enter in the console
+Next `restart R`,  
+
+and then enter in the console
 ```{r activate_targets}
 renv::activate()
 ```
