@@ -1,28 +1,16 @@
 services:
   rstudio:
-    image: rstudio-mila-image
-    build:
-     context: .
-     dockerfile: docker/Dockerfile
-    container_name: rstudio-mila
+    image: cecadbif/rstudio-crc-image:4.1.2
+    container_name: rstudio-crc
     ports:
-      - "54459:8787"
+      - "54499:8787"
     volumes:
-      - type: "bind"
-        source: ".Rprofile"
-        target: "/home/rstudio/.Rprofile"
       - type: "bind"
         source: "$HOME/.gitconfig"
         target: "/home/rstudio/.gitconfig"
       - type: "bind"
-        source: "/mnt/raid1/projects/2_primary.analysis/AG_Kashkar/Schiffmann/RNA-seq_project_fschorn_HK01/Debasish/mila-again"
+        source: "/mnt/raid1/projects/2_primary.analysis/AG_Kashkar/Role-of-XIAP-in-Colorectal-Cancer"
         target: "/home/rstudio/project"
-      - type: "bind"
-        source: "/home/ugoebel/rstudio_cache/R"
-        target: "/home/rstudio/.cache/R"
-      - type: "bind"
-        source: "/home/ugoebel/rstudio_cache/AnnotationHub"
-        target: "/home/rstudio/.cache/AnnotationHub"
     environment:
       - USERNAME=ugoebel
       - USERID=1000
