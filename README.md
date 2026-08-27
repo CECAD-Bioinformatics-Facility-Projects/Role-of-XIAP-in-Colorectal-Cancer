@@ -22,44 +22,42 @@ The initial analysis runs a [targets pipeline](https://books.ropensci.org/target
 
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
 
-**This project comes with the `TARGETS` environment pre-installed.** To switch to the `FIGURES` 
-environment, enter in the rstudio terminal (or on any linux-type command line): 
-
-```
-cp -a renv.lock_FOR_FIGURES renv.lock
-```
-
-then enter in the R console:
-
-```{r switch_environment}
-renv::restore(clean=TRUE)
-```
-Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) Finally `restart R`.
-
-To switch back to the `TARGETS` environment, copy `renv.lock_FOR_TARGETS` to `renv.lock` accordingly.
-
 ### The Targets Pipeline
 
-There is an additional complexity here:
+To activate the `TARGETS` environment, enter in the R console:
+
+```{r restore_targets}
+
+renv::restore(lockfile = renv.lock_FOR_TARGETS, clean=TRUE)
+```
+Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) 
+
+Finally `restart R` and enter in the console
+
+```{r activate_targets}
+renv::activate()
+```
+
+[To switch to the `FIGURES` environment, run the same code with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.]
+
 
 With the `TARGETS` environment activated, run
 
-```{r run_targets103}
+```{r run_targets105}
 library(targets)
 set.seed(6733)
 
-tar_make(script="scripts/_targets.R")
+tar_make(script="scripts/_targets105.R")
 ```
-to produce the pipeline results in a folder named "_targets".  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results are stable between runs, in spite of the  built-in random component of the algorithm. 
+to produce the pipeline results in a folder named "_targets105", using Ensembl version 105.  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
 ### The Figures Code
+To switch to the `FIGURES` environment, run the same code as described above for TARGETS, but with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.
 
-First switch to the FIGURES environment as described above.
+To create the figures with Ensembl version 105, run
 
-To create the figures with Ensembl version 103, run
-
-```{r figures103}
+```{r figures105}
 library(targets)
 source("R/functions.R")
 
@@ -68,7 +66,7 @@ set.seed(6733)
 source("scripts/reproduce_figures.R")
 
 ```
-This script reads its input from "_targets" and produces Figures 3A, 3B, and S3A of the submitted paper. 
+This script reads its input from "_targets105" and produces Figures 3A, 3B, and S3A of the submitted paper. 
 
 The figures are returned invisibly, as variables in the environment. They are printed in the Plots pane by typing their name at the console prompt:
 
@@ -85,7 +83,7 @@ All figures refer to the comparison of the KI genotype versus WT.
 
 ### Saving Variables Permanently on Disk
 
-Environment variables are lost on re-starting the R session or quitting R.
+Environment variables are lost upon re-starting the R session or quitting R.
 
 They can be saved on disk like so:
 
