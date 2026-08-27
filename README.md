@@ -76,7 +76,7 @@ The figures are returned invisibly, as variables in the environment. They are pr
 - `GSEA_plot` prints **Figure S3A** (the GSEA plot) 
 
 
-All figures refer to the comparison of the KI genotype versus WT.
+All figures refer to the comparison of the KI genotype versus wildtype (WT).
 
 ### Saving Variables Permanently on Disk
 
