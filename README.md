@@ -37,7 +37,7 @@ and then enter in the console
 renv::activate()
 ```
 
-[To switch to the `FIGURES` environment, run the same code with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.]
+[To later switch to the `FIGURES` environment, follow these same steps, with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.]
 
 
 With the `TARGETS` environment activated, run
