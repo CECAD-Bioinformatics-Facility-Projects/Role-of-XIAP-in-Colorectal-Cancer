@@ -26,7 +26,6 @@ Here we use a manual workaround. We provide two separate renv.lock files, descri
 
 To activate the `TARGETS` environment, enter in the R console:
 ```{r restore_targets}
-
 renv::restore(lockfile = renv.lock_FOR_TARGETS, clean=TRUE)
 ```
 Answer "y" to the package update prompt. (You can ignore warnings about the renv version.) 
