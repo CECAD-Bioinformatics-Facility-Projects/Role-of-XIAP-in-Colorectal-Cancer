@@ -45,7 +45,9 @@ set.seed(6733)
 
 tar_make(script="scripts/_targets.R")
 ```
-to produce the pipeline results in a folder named "_targets", using Ensembl version 105.  Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
+to produce the pipeline results in a folder named "_targets", using Ensembl version 105.  
+
+Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
 ### The Figures Code
