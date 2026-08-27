@@ -16,6 +16,5 @@ renv/activate.R
 .DS_Store
 *.rds
 *.RDS
-_targets/
 .cache/
 
