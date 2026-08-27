@@ -1,14 +1,9 @@
 # RNA-Seq specific ignores
-data/raw_data/*
-data/reference_data/*
-data/meta_data/*
-data/processed_data/*
-#results_RNA-seq*/*
-#results_RNA-seq/star_salmon/stringtie
-#!results_RNA-seq/star_salmon/*/quant.sf
-#!results_RNA-seq/star_salmon/*.tsv
-#results/*
+results_RNA-seq*/*
+!results_RNA-seq/star_salmon/*/quant.sf
+!results_RNA-seq/star_salmon/*.tsv
 #logs/
+count_matrix_*.tsv
 .Rhistory
 .RData
 .Rproj.user
@@ -21,7 +16,6 @@ renv/activate.R
 .DS_Store
 *.rds
 *.RDS
-out*/*
-_targets*/*
+_targets*
 .cache/*
-.gitignore
+
