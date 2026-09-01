@@ -12,7 +12,40 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 
 ## Repository content
 
-This repository contains the R source code for reproducing Figures 3A, 3B, and S3 of the submitted manuscript.
+This repository contains the R source code for reproducing Figures 3A, 3B, and S3 of the submitted manuscript. The repository is organized as follows:
+
+.
+├── compose.yml
+├── design.csv
+├── docker
+│   └── Dockerfile
+├── project.Rproj
+├── R
+│   ├── functional_enrichment.R
+│   ├── functions.R
+│   └── gseaplot2_local.R
+├── README.md
+├── renv
+│   ├── activate.R
+│   ├── library
+│   ├── local
+│   ├── settings.dcf
+│   └── staging
+├── renv.lock_FOR_FIGURES
+├── renv.lock_FOR_TARGETS
+├── requested_terms.R
+├── results_RNA-seq
+│   ├── count_matrix_raw.tsv
+│   ├── count_matrix_vst.tsv
+│   └── star_salmon
+├── scripts
+│   ├── reproduce_figures.R
+│   └── _targets.R
+└── _targets
+    ├── meta
+    └── objects
+
+
 
 ### R environments
 
