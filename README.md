@@ -14,6 +14,7 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 
 This repository contains the R source code for reproducing Figures 3A, 3B, and S3 of the submitted manuscript. The repository is organized as follows:
 
+```bash
 .
 ├── compose.yml
 ├── design.csv
@@ -44,7 +45,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 └── _targets
     ├── meta
     └── objects
-
+```
 
 
 ### R environments
