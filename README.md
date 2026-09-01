@@ -16,17 +16,17 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 <pre>
 .
-├── compose.yml
-├── design.csv
-├── docker
-│   └── Dockerfile
+├── compose.yml # script for starting and stopping the container
+├── design.csv # the metadata of the experiment 
+├── docker 
+│   └── Dockerfile # here you can install additional Ubuntu packages if needed
 ├── project.Rproj
-├── R
+├── R # a folder for local R functions
 │   ├── functional_enrichment.R
 │   ├── functions.R
 │   └── gseaplot2_local.R
 ├── README.md
-├── renv
+├── renv # a folder for the reproducible management of R libraries
 │   ├── activate.R
 │   ├── library
 │   ├── local
@@ -34,15 +34,15 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 │   └── staging
 ├── renv.lock_FOR_FIGURES
 ├── renv.lock_FOR_TARGETS
-├── requested_terms.R
-├── results_RNA-seq
+├── requested_terms.R # a listing of the terms to be shown on GSEA-related plots
+├── results_RNA-seq # a folder containing output of the nf-core pipeline
 │   ├── count_matrix_raw.tsv
 │   ├── count_matrix_vst.tsv
-│   └── star_salmon
-├── scripts
-│   ├── reproduce_figures.R
-│   └── _targets.R
-└── _targets
+│   └── star_salmon # this sub-folder contains the quant.sf files 
+├── scripts 
+│   ├── reproduce_figures.R # this script draws the figures
+│   └── _targets.R # this is the code of the targets pipeline
+└── _targets # a folder for the output of the targets pipeline
     ├── meta
     └── objects
 </pre>
