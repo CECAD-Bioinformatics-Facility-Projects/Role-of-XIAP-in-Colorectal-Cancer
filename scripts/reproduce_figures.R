@@ -4,7 +4,7 @@ library(clusterProfiler)
 library(EnhancedVolcano)
 source("~/project/R/gseaplot2_local.R")
 
-use_store <- "/home/rstudio/project/_targets" ##105"
+use_store <- "/home/rstudio/project/_targets"
 
 ## read the GO terms of interest [requested by Hamid Kashkar]:
 source("requested_terms.R")
@@ -234,13 +234,11 @@ candidate_min_cov <- names(lfc)[which.max(lfc)]
 
 
 ## Gene Volcano:
-### BiocManager::install("org.Mm.eg.db") ## not via renv() -- OK?
 
 library(GO.db)
 library(org.Mm.eg.db)
 
 ## GO:0002237 is "response to molecule of bacterial origin"
-
 GOALL_0002237 <- (AnnotationDbi::select(org.Mm.eg.db, keys=c("GO:0002237"),
                                         columns = c('SYMBOL'),
                                         keytype = "GOALL"))$SYMBOL |> unique()
