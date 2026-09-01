@@ -48,7 +48,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 </pre>
 
 
-### R environments
+## R environments
 
 The code has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
 
@@ -56,7 +56,7 @@ The initial analysis runs a [targets pipeline](https://books.ropensci.org/target
 
 Here we use a manual workaround. We provide two separate renv.lock files, describing their respective environments: `renv.lock_FOR_TARGETS` for the 2022 analysis and `renv.lock_FOR_FIGURES` for the figure code. 
 
-### The Targets Pipeline
+## The Targets Pipeline
 
 To activate the `TARGETS` environment, enter in the R console:
 ```{r restore_targets}
@@ -86,7 +86,7 @@ to produce the pipeline results in a folder named "_targets", using Ensembl vers
 Setting a "seed"" assures that the Gene Set Enrichment Analysis (GSEA) results produced by the pipeline are stable between runs, in spite of the  built-in random component of the algorithm. 
 
 
-### The Figures Code
+## The Figures Code
 To switch to the `FIGURES` environment, run the same code as described above for TARGETS, but with `renv.lock_FOR_TARGETS` replaced by `renv.lock_FOR_FIGURES`.
 
 To create the figures (using Ensembl version 105), run
