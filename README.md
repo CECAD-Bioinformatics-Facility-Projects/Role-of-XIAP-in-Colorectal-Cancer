@@ -50,7 +50,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 ## How Start and Stop the Container
 
-`./composeTEMPLATE.bash > compose.yml` creates a user-specific file for defining and running Docker containers. 
+`./composeTEMPLATE.bash > compose.yml` creates a user-specific file for defining and running a Docker container. 
 
 The following commands use this file:
 - `docker compose up -d` starts the container 
@@ -60,7 +60,7 @@ The following commands use this file:
 [If your docker installation pre-dates June 2023, you may have to use 
 `docker-compose` instead of `docker compose`.]
 
-After starting the container, rstudio is accessible in the browser with URL `localhost:???`. Log in using with `USERNAME=rstudio` and "PASSWORD=1rstudio".
+After starting the container, rstudio is accessible in the browser with URL `localhost:???`. Log in using with `USERNAME=rstudio` and `PASSWORD=1rstudio`.
 
 ## R environments
 
