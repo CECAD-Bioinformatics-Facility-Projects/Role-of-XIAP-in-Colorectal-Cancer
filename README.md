@@ -61,6 +61,8 @@ Creation and execution of the container was tested on a system with
 - GPU: AMD ATI Radeon RX 470/480/570/570X/580/580X/590 
 - Memory: 3578MiB / 64326MiB 
 
+If you don't have docker installed yet, consult this [guide for Windows, MacOS, and Linux](https://dockerhol.com/blog/installing-docker-step-by-step-for-windows-mac-and-linux).
+
 
 ## How Start and Stop the Container
 
@@ -68,7 +70,7 @@ Creation and execution of the container was tested on a system with
 
 The following commands use this file:
 - `docker compose up -d` starts the container 
-- `docker compose down`  stop the running container
+- `docker compose down`  stops a running container
 - `docker compose up -d --build` rebuilds the container after modifying the Dockerfile
 
 [If your docker installation pre-dates June 2023, you may have to use 
