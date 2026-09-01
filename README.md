@@ -57,7 +57,10 @@ The following commands use this file:
 - `docker compose down`  stop the running container
 - `docker compose up -d --build` rebuilds the container after modifying the Dockerfile
 
-[If your docker installation pre-dates June 2023, you may have to use `docker-compose` instead of `docker compose`.]
+[If your docker installation pre-dates June 2023, you may have to use 
+`docker-compose` instead of `docker compose`.]
+
+After starting the container, rstudio is accessible in the browser with URL `localhost:???`. Log in using with `USERNAME=rstudio` and "PASSWORD=1rstudio".
 
 ## R environments
 
