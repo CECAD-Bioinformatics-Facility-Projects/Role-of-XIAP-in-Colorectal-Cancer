@@ -32,8 +32,8 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 │   ├── <b>local</b>
 │   ├── <b>settings.dcf</b>
 │   └── <b>staging</b>
-├── <b>renv.lock_FOR_FIGURES</b>
-├── <b>renv.lock_FOR_TARGETS</b>
+├── <b>renv.lock_FOR_FIGURES</b> # R environment expected by the figures code
+├── <b>renv.lock_FOR_TARGETS</b> # R environment expected by the targets pipeline
 ├── <b>requested_terms.R</b> # a listing of the terms to be shown on GSEA-related plots
 ├── <b>results_RNA-seq</b> # a folder containing output of the nf-core pipeline
 │   ├── <b>count_matrix_raw.tsv</b>
