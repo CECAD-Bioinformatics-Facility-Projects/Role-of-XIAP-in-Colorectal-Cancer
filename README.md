@@ -47,10 +47,24 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
     └── <b>objects</b>
 </pre>
 
+## Prerequisites
+
+In the following it is assumed that you are either working on a Linux system or that you can emulate a Linux-type command line on your system.
+
+Creation and execution of the container was tested on a system with
+
+- OS: Linux Mint 20 x86_64 
+- Host: X570 AORUS ELITE -CF 
+- Kernel: 5.4.0-120-generic 
+- DE: Cinnamon 
+- CPU: AMD Ryzen 7 3700X (16) @ 3.600GHz 
+- GPU: AMD ATI Radeon RX 470/480/570/570X/580/580X/590 
+- Memory: 3578MiB / 64326MiB 
+
 
 ## How Start and Stop the Container
 
-`./composeTEMPLATE.bash > compose.yml` creates a user-specific file for defining and running Docker containers. 
+`./composeTEMPLATE.bash > compose.yml` creates a user-specific file for defining and running a Docker container. 
 
 The following commands use this file:
 - `docker compose up -d` starts the container 
