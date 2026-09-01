@@ -2,7 +2,7 @@
 
 Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) and wildtype mice, in order to experimentally examine the role of XIAP in CRC pathogenesis. This repository contains a reproducible workflow for the analysis of RNA-Seq data from this experiment. 
 
-## Workflow structure
+## Workflow Structure of the Analysis 
 
 - Raw `RNA seq reads` (link to be provided) were processed with the [nf-core rnaseq pipeline v3.6](https://github.com/nf-core/rnaseq/blob/master/CITATIONS.md)
 - `quant.sf files` are produced by the [salmon](https://combine-lab.github.io/salmon/) software as part of the nf-core pipeline. Here, they are provided in the `sub-folders of results_RNA-seq/star_salmon/`. They contain probabilistic `estimates of individual transcript expression`. 
@@ -10,7 +10,7 @@ Schiffmann et al. (submitted) compared XIAP knock-in (KI), XIAP knock-out (KO) a
 - `Downstream scripts post-process and visualize` these targets objects. 
 
 
-## Repository content
+## Repository Content
 
 This repository contains the R source code for reproducing Figures 3A, 3B, and S3 of the submitted manuscript. The repository is organized as follows:
 
@@ -47,6 +47,12 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
     └── <b>objects</b>
 </pre>
 
+
+## How to Set the Container Up
+
+- Use `docker compose up -d` to start the container 
+- use `docker compose down` to stop the running container
+- Use `docker compose up -d --build` to rebuild the container after modifying the Dockerfile
 
 ## R environments
 
