@@ -35,7 +35,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 ├── <b>renv.lock_FOR_FIGURES</b> # R environment expected by the figures code
 ├── <b>renv.lock_FOR_TARGETS</b> # R environment expected by the targets pipeline
 ├── <b>requested_terms.R</b> # sets R variable `requested_terms` (GO terms to be shown on GSEA plots)
-├── <b>results_RNA-seq</b> # a folder containing the output of the nf-core pipeline
+├── <b>results_RNA-seq</b> # a folder containing output of the nf-core pipeline
 │   ├── <b>count_matrix_raw.tsv</b>
 │   ├── <b>count_matrix_vst.tsv</b>
 │   └── <b>star_salmon</b> # this sub-folder contains the quant.sf files 
