@@ -51,7 +51,10 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 In the following it is assumed that you are either working on a Linux system or that you can emulate a Linux-type command line on your system.
 
-Creation and execution of the container was tested on a system with
+If you don't have docker installed yet, consult this [guide for Windows, MacOS, and Linux](https://dockerhol.com/blog/installing-docker-step-by-step-for-windows-mac-and-linux).
+
+
+Creation and execution of the docker container was tested on a system with
 
 - OS: Linux Mint 20 x86_64 
 - Host: X570 AORUS ELITE -CF 
@@ -61,8 +64,6 @@ Creation and execution of the container was tested on a system with
 - CPU: AMD Ryzen 7 3700X (16) @ 3.600GHz 
 - GPU: AMD ATI Radeon RX 470/480/570/570X/580/580X/590 
 - Memory: 3578MiB / 64326MiB 
-
-If you don't have docker installed yet, consult this [guide for Windows, MacOS, and Linux](https://dockerhol.com/blog/installing-docker-step-by-step-for-windows-mac-and-linux).
 
 
 ## How Start and Stop the Container
