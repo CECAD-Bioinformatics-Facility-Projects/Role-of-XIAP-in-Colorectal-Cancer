@@ -37,7 +37,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 ├── <b>requested_terms.R</b> # sets R variable `requested_terms` (GO terms to be shown on GSEA plots)
 ├── <b>results_RNA-seq</b> # a folder containing output of the nf-core pipeline
 │   ├── <b>count_matrix_raw.tsv</b>
-│   ├── <b>count_matrix_vst.tsv</b>
+│   ├── <b>count_matrix_vst.tsv</b> # counts after "Variance Stabilizing Transformation"
 │   └── <b>star_salmon</b> # this sub-folder contains the quant.sf files 
 ├── <b>scripts</b> 
 │   ├── <b>reproduce_figures.R</b> # this script draws the figures
