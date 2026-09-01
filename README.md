@@ -48,7 +48,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 </pre>
 
 
-## How to Set the Container Up
+## How Start and Stop the Container
 
 - Use `docker compose up -d` to start the container 
 - use `docker compose down` to stop the running container
