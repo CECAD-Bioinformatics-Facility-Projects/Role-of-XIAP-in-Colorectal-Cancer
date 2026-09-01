@@ -16,7 +16,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 <pre>
 .
-├── compose.yml # script for starting and stopping the container  
+├── compose.yml `# script for starting and stopping the container`  
 ├── design.csv # the metadata of the experiment 
 ├── docker 
 │   └── Dockerfile # here you can install additional Ubuntu packages if needed
