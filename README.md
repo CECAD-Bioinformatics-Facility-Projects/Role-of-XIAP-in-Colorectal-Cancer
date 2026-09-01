@@ -54,7 +54,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 - use `docker compose down` to stop the running container
 - Use `docker compose up -d --build` to rebuild the container after modifying the Dockerfile
 
-[If your docker installation pre-dates June 2023, you may have to user `docker-compose` instead of `docker compose`.]
+[If your docker installation pre-dates June 2023, you may have to use `docker-compose` instead of `docker compose`.]
 
 ## R environments
 
