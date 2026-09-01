@@ -17,34 +17,34 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 <pre>
 .
 ├── <b>compose.yml</b> # script for starting and stopping the container  
-├── design.csv # the metadata of the experiment 
-├── docker 
-│   └── Dockerfile # here you can install additional Ubuntu packages if needed
-├── project.Rproj
-├── R # a folder for local R functions
-│   ├── functional_enrichment.R
-│   ├── functions.R
-│   └── gseaplot2_local.R
-├── README.md
-├── renv # a folder for the reproducible management of R libraries
-│   ├── activate.R
-│   ├── library
-│   ├── local
-│   ├── settings.dcf
-│   └── staging
-├── renv.lock_FOR_FIGURES
-├── renv.lock_FOR_TARGETS
-├── requested_terms.R # a listing of the terms to be shown on GSEA-related plots
-├── results_RNA-seq # a folder containing output of the nf-core pipeline
-│   ├── count_matrix_raw.tsv
-│   ├── count_matrix_vst.tsv
-│   └── star_salmon # this sub-folder contains the quant.sf files 
-├── scripts 
-│   ├── reproduce_figures.R # this script draws the figures
-│   └── _targets.R # this is the code of the targets pipeline
-└── _targets # a folder for the output of the targets pipeline
-    ├── meta
-    └── objects
+├── <b>design.csv</b> # the metadata of the experiment 
+├── <b>docker</b> 
+│   └── <b>Dockerfile</b> # here you can install additional Ubuntu packages if needed
+├── <b>project.Rproj</b>
+├── <b>R</b> # a folder for local R functions
+│   ├── <b>functional_enrichment.R</b>
+│   ├── <b>functions.R</b>
+│   └── <b>gseaplot2_local.R</b>
+├── <b>README.md</b>
+├── <b>renv</b> # a folder for the reproducible management of R libraries
+│   ├── <b>activate.R</b>
+│   ├── <b>library</b>
+│   ├── <b>local</b>
+│   ├── <b>settings.dcf</b>
+│   └── <b>staging</b>
+├── <b>renv.lock_FOR_FIGURES</b>
+├── <b>renv.lock_FOR_TARGETS</b>
+├── <b>requested_terms.R</b> # a listing of the terms to be shown on GSEA-related plots
+├── <b>results_RNA-seq</b> # a folder containing output of the nf-core pipeline
+│   ├── <b>count_matrix_raw.tsv</b>
+│   ├── <b>count_matrix_vst.tsv</b>
+│   └── <b>star_salmon</b> # this sub-folder contains the quant.sf files 
+├── <b>scripts</b> 
+│   ├── <b>reproduce_figures.R</b> # this script draws the figures
+│   └── <b>_targets.R</b> # this is the code of the targets pipeline
+└── _<b>targets</b> # a folder for the output of the targets pipeline
+    ├── <b>meta</b>
+    └── <b>objects</b>
 </pre>
 
 
