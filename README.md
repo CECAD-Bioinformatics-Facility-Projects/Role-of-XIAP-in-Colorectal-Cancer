@@ -50,7 +50,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 ## How Start and Stop the Container
 
-`./composeTEMPLATE.yml > compose.yml` create a user-specific compose.yml file 
+`./composeTEMPLATE.bash > compose.yml` creates a user-specific compose.yml file 
 
 The following commands use this file:
 - `docker compose up -d` starts the container 
