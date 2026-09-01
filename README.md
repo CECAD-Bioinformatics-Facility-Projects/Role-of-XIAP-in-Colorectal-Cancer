@@ -90,7 +90,9 @@ To activate the `TARGETS` environment, enter in the R console:
 ```{r restore_targets}
 renv::restore(lockfile = "renv.lock_FOR_TARGETS", clean=TRUE)
 ```
-Answer "y" to the package update prompt. (You can ignore warnings about the renv version -- the next steps will take care of this.) 
+Answer "y" to the package update prompt. 
+
+(You can ignore warnings about the renv version -- the next steps will take care of this.) 
 
 Next `restart R`,  
 
