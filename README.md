@@ -176,4 +176,12 @@ To read a stored variable back from disk, for example `GSEA_plot`, use
 GSEA_plot <- readRDS("GSEA_plot.rds")
 ```
 
+## If You Have Questions
+
+If you have questions regarding the technical side of the project (running the container, accessing rstudio ...), please contact the CECAD Bioinformatics team at `cecad-bioinformatics@uni-koeln.de`. 
+
+For scientific questions, please contact `lars.schiffmann@uk-koeln.de`.
+
+
+
 
