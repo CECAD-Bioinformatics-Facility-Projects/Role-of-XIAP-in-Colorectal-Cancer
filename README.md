@@ -75,7 +75,7 @@ Creation and execution of the docker container was tested on a system with
 - Docker: version 20.10.17, build 100c701
 
 
-## How Start and Stop the Container
+## How to Start and Stop the Container
 
 Executing the command `bash make_compose.bash 54499 > compose.yml` in the rstudio terminal creates a file for defining and running a Docker container.
 
