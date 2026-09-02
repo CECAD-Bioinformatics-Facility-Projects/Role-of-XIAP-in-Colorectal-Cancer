@@ -48,7 +48,14 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
     └── <b>objects</b>
 </pre>
 
-## Prerequisites
+
+## Clone the Repository
+
+Make a personal copy of the this repository by typing on the command line
+`git clone https://github.com/CECAD-Bioinformatics-Facility-Projects/Role-of-XIAP-in-Colorectal-Cancer.git`. This creates a folder `Role-of-XIAP-in-Colorectal-Cancer`. Make this folder your working directory.
+
+
+## Prerequisites for Running Rstudio in a Docker Container
 
 In the following it is assumed that you are either working on a Linux system or that you can emulate a Linux-type command line on your system.
 
@@ -70,16 +77,18 @@ Creation and execution of the docker container was tested on a system with
 
 ## How Start and Stop the Container
 
-`bash make_compose.bash 54499 > compose.yml` creates a file for defining and running a Docker container, which will make an rstudio instance accessible at `localhost:54499` in your web browser. **NOTE** that "54499" is an arbitrarily chosen port number -- **be sure to select a number which is not already used by your system!**  
+Executing the command `bash make_compose.bash 54499 > compose.yml` in the rstudio terminal creates a file for defining and running a Docker container.
 
-The following commands use this file:
+**NOTE** that "54499" is an arbitrarily chosen port number -- **be sure to select a number which is not already used by your system!**  
+
+The following commands use this `compose.yml`:
 - `docker compose up -d` starts the container 
 - `docker compose down`  stops a running container
 - `docker compose up -d --build` rebuilds the container after modifying the Dockerfile
 
 If your docker installation pre-dates June 2023, you may have to use `docker-compose` instead of `docker compose`.
 
-After starting the container, rstudio is accessible in the browser with URL `localhost:54499` (or whatever port number you chose). Log in using  `USERNAME=rstudio` and `PASSWORD=1rstudio`. The working directory of the rstudio instance is the directory in which `make_compose.bash` had been executed.
+After starting the container, rstudio is accessible in the web browser with URL `localhost:54499` (or whatever port number you chose). Log in using  `USERNAME=rstudio` and `PASSWORD=1rstudio`. **NOTE** that the working directory of the rstudio instance is the directory in which `make_compose.bash` had been executed.
 
 ## R environments
 
