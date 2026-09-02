@@ -1,0 +1,22 @@
+#!/bin/bash
+
+echo "services:"
+echo "  rstudio:"
+echo "    image: cecadbif/rstudio-crc-image:4.1.2"
+echo "    container_name: rstudio-crc"
+echo "    ports:"
+echo "      - \"$1:8787\""
+echo "    volumes:"
+echo "      - type: \"bind\""
+echo "        source: \"$HOME/.gitconfig\""
+echo "        target: \"/home/rstudio/.gitconfig\""
+echo "      - type: \"bind\""
+echo "        source: \"$PWD\""
+echo "        target: \"/home/rstudio/project\""
+echo "    environment:"
+echo "      - USERNAME=$USER"
+echo "      - USERID=1000"
+echo "      - GROUPID=1000"
+echo "      - USER=rstudio"
+echo "      - PASSWORD=1rstudio"
+
