@@ -182,6 +182,9 @@ If you have questions regarding the technical side of the project (running the c
 
 For scientific questions, please contact `lars.schiffmann@uk-koeln.de`.
 
+## Raw Sequencing Data Availability
+
+The raw sequencing data have not yet been deposited in a public repository, but they are available upon reasonable request from the authors of the submitted paper,
 
 
 
