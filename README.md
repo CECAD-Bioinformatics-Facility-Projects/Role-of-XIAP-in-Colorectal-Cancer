@@ -81,7 +81,7 @@ Executing the command `bash make_compose.bash 54499 > compose.yml` in the rstudi
 
 **NOTE** that "54499" is an arbitrarily chosen port number -- **be sure to select a number which is not already used by your system!**  
 
-The following commands use this `compose.yml`:
+The following commands use this file:
 - `docker compose up -d` starts the container 
 - `docker compose down`  stops a running container
 - `docker compose up -d --build` rebuilds the container after modifying the Dockerfile
