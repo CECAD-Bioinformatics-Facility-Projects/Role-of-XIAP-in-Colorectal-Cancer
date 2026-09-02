@@ -75,14 +75,13 @@ The following commands use this file:
 - `docker compose down`  stops a running container
 - `docker compose up -d --build` rebuilds the container after modifying the Dockerfile
 
-[If your docker installation pre-dates June 2023, you may have to use 
-`docker-compose` instead of `docker compose`.]
+If your docker installation pre-dates June 2023, you may have to use `docker-compose` instead of `docker compose`.
 
 After starting the container, rstudio is accessible in the browser with URL `localhost:???`. Log in using  `USERNAME=rstudio` and `PASSWORD=1rstudio`.
 
 ## R environments
 
-The code we document here has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
+The R code we document here has to deal with a partial R environment incompatibility between an initial analysis in 2022 and recent code for the figures of the submitted paper. 
 
 The initial analysis runs a [targets pipeline](https://books.ropensci.org/targets/), which produces the input objects for the figures code. Both parts are compatible with `R-4.1.2` and should be run under this R version. However the minimal version requirements of some functions have changed between the initial and the recent analysis. Therefore it is not possible to unite both in a single environment without changing the original environment of the targets pipeline, which could change the input to the figures.
 
