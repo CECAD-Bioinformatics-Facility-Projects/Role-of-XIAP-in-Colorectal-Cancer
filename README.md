@@ -20,6 +20,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 ├── <b>design.csv</b> # the metadata of the experiment 
 ├── <b>docker</b> 
 │   └── <b>Dockerfile</b> # here you can install additional Ubuntu packages if needed
+├── <b>make_compose.bash</b> # bash script for writing a user-adapted compose.yml file 
 ├── <b>project.Rproj</b>
 ├── <b>R</b> # a folder for local R functions
 │   ├── <b>functional_enrichment.R</b>
@@ -64,11 +65,12 @@ Creation and execution of the docker container was tested on a system with
 - CPU: AMD Ryzen 7 3700X (16) @ 3.600GHz 
 - GPU: AMD ATI Radeon RX 470/480/570/570X/580/580X/590 
 - Memory: 3578MiB / 64326MiB 
+- Docker: version 20.10.17, build 100c701
 
 
 ## How Start and Stop the Container
 
-`./composeTEMPLATE.bash > compose.yml` creates a user-specific file for defining and running a Docker container. 
+`bash make_compose.bash 54499 > compose.yml` creates a file for defining and running a Docker container, which will make an rstudio instance accessible at `localhost:54499` in your web browser. **NOTE** that "54499" is an arbitrarily chosen port number -- **be sure to select a number which is not already used by your system!**  
 
 The following commands use this file:
 - `docker compose up -d` starts the container 
@@ -77,7 +79,7 @@ The following commands use this file:
 
 If your docker installation pre-dates June 2023, you may have to use `docker-compose` instead of `docker compose`.
 
-After starting the container, rstudio is accessible in the browser with URL `localhost:???`. Log in using  `USERNAME=rstudio` and `PASSWORD=1rstudio`.
+After starting the container, rstudio is accessible in the browser with URL `localhost:54499` (or whatever port number you chose). Log in using  `USERNAME=rstudio` and `PASSWORD=1rstudio`. The working directory of the rstudio instance is the directory in which `make_compose.bash` had been executed.
 
 ## R environments
 
