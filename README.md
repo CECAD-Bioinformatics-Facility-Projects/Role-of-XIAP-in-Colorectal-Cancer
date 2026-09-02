@@ -51,7 +51,7 @@ This repository contains the R source code for reproducing Figures 3A, 3B, and S
 
 ## Clone the Repository
 
-Make a personal copy of the this repository by typing on the command line
+Make a personal copy of this repository by typing on the command line
 `git clone https://github.com/CECAD-Bioinformatics-Facility-Projects/Role-of-XIAP-in-Colorectal-Cancer.git`. This creates a folder `Role-of-XIAP-in-Colorectal-Cancer`. Make this folder your working directory.
 
 
